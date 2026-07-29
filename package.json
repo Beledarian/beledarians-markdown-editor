@@ -3,7 +3,7 @@
   "description": "A personal, local-first Markdown editor with web, Tauri desktop, and experimental Android surfaces.",
   "homepage": "https://beledarian.github.io/beledarians-markdown-editor/",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "author": "Beledarian",
   "repository": {
