@@ -299,7 +299,8 @@ export function useSearchAndReplace(markdown, setMarkdown, viewMode) {
       return editor
         ? collectMatches(markdown, query, matchCase, isRegex).length
         : matches.preview.length;
-    } catch {
+    } catch (error) {
+      console.error('Search highlighting failed', error);
       clearFindHighlights();
       return 0;
     }
