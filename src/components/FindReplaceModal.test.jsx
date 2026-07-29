@@ -66,7 +66,7 @@ describe('FindReplaceModal lifecycle', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Replace All' }));
     fireEvent.mouseDown(document.body);
 
-    expect(onFind).toHaveBeenCalledWith('alpha');
+    expect(onFind).toHaveBeenCalledWith('alpha', false, false, false);
     expect(onReplace).toHaveBeenCalledWith('alpha', 'beta', expect.anything(), expect.anything());
     expect(onReplaceAll).toHaveBeenCalledWith('alpha', 'beta', expect.anything(), expect.anything());
     expect(onClose).not.toHaveBeenCalled();

@@ -93,9 +93,19 @@ describe('Search and Replace Logic & State Management', () => {
     const findPrevBtn = screen.getByRole('button', { name: 'Find Prev' });
     
     fireEvent.click(findNextBtn);
+    expect(editor.selectionStart).toBe(0);
+    expect(editor.selectionEnd).toBe(5);
+
+    fireEvent.click(findNextBtn);
+    expect(editor.selectionStart).toBe(12);
+    expect(editor.selectionEnd).toBe(17);
+
     fireEvent.click(findPrevBtn);
-    // Since we mock the editor selection but JSDOM doesn't perfectly support setSelectionRange side effects on UI,
-    // we just verify the buttons don't crash.
+    expect(editor.selectionStart).toBe(0);
+    expect(editor.selectionEnd).toBe(5);
+    expect(Element.prototype.scrollTo).toHaveBeenCalledWith(
+      expect.objectContaining({ behavior: 'smooth' }),
+    );
     
     // Regex test
     const useRegexCheck = screen.getByLabelText('Use Regex');

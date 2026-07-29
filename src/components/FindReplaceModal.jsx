@@ -102,7 +102,7 @@ const FindReplaceModal = ({ isOpen, onClose, onFind, onReplace, onReplaceAll, ma
               value={findText}
               onChange={(e) => setFindText(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') onFind(findText);
+                if (e.key === 'Enter') onFind(findText, matchCase, useRegex, e.shiftKey);
               }}
             />
           </div>
