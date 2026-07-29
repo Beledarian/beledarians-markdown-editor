@@ -1,0 +1,203 @@
+@layer components {
+  .workspace-shell :is(.title-region, .command-region) {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    border-bottom: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-chrome);
+    color: var(--ui-text);
+    overflow: hidden;
+  }
+
+  .workspace-shell .command-region > .top-bar {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    padding: 0 var(--ui-space-5);
+    gap: var(--ui-space-5);
+    border: 0;
+    background: transparent;
+    color: inherit;
+    box-sizing: border-box;
+  }
+
+  .workspace-shell .command-region .button-container {
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: var(--ui-space-3);
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .workspace-shell .command-region .button-container > * {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .workspace-shell .activity-region {
+    min-width: 0;
+    min-height: 0;
+    border-right: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-chrome);
+    color: var(--ui-text-muted);
+    overflow: hidden;
+  }
+
+  .workspace-shell .workspace-region {
+    min-width: 0;
+    min-height: 0;
+    background: var(--ui-bg-panel);
+    color: var(--ui-text);
+    overflow: hidden;
+  }
+
+  .workspace-shell .workspace-region > .app {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    background: transparent;
+    color: inherit;
+  }
+
+  .workspace-shell .workspace-region .main-area,
+  .workspace-shell .workspace-region .editor-container {
+    min-width: 0;
+    min-height: 0;
+    background: transparent;
+  }
+
+  .workspace-shell :is(.source-region, .render-region) {
+    min-width: 0;
+    min-height: 0;
+    overscroll-behavior: contain;
+    overflow: auto;
+  }
+
+  .workspace-shell .source-region {
+    background: var(--ui-bg-editor);
+    color: var(--ui-text);
+    font-family: var(--ui-font-source);
+  }
+
+  .workspace-shell .render-region {
+    background: var(--ui-bg-render);
+    color: var(--ui-text-body);
+    font-family: var(--ui-font-render);
+  }
+
+  .workspace-shell .pane-heading,
+  .workspace-shell .proof-heading {
+    display: flex;
+    align-items: center;
+    min-height: var(--ui-pane-heading-height);
+    padding-inline: var(--ui-space-6);
+    border-bottom: var(--ui-hairline) solid var(--ui-border);
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font-source);
+    font-size: var(--ui-font-size-xs);
+    letter-spacing: 0.07em;
+  }
+
+  .workspace-shell .outline-region {
+    min-width: 0;
+    min-height: 0;
+    border-left: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-panel);
+    color: var(--ui-text-muted);
+    overflow: auto;
+  }
+
+  .workspace-shell .outline-region :is(a, button, [role='link']) {
+    color: inherit;
+  }
+
+  .workspace-shell .outline-region [aria-current='location'] {
+    color: var(--ui-action);
+    border-left-color: var(--ui-action);
+  }
+
+  .workspace-shell[data-style='reading'] .outline-region {
+    padding: var(--ui-space-12) var(--ui-space-6);
+    font-size: var(--ui-font-size-sm);
+  }
+
+  .workspace-shell[data-style='reading'] .render-region {
+    border: var(--ui-hairline) solid var(--ui-paper-border);
+    box-shadow: var(--ui-paper-shadow);
+  }
+
+  .workspace-shell[data-style='reading'] .source-region {
+    border-left: var(--ui-focus-ring-width) solid var(--ui-action);
+    background: var(--ui-bg-marginalia);
+  }
+
+  .workspace-shell[data-style='operator'] :is(.title-region, .command-region) {
+    font-family: var(--ui-font-source);
+  }
+
+  .workspace-shell[data-style='operator'] .render-region {
+    border-left: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-render);
+  }
+
+  .workspace-shell.zen-mode :is(
+      .title-region,
+      .command-region,
+      .activity-region,
+      .navigator-region,
+      .tabs-region,
+      .outline-region,
+      .status-region
+    ) {
+    display: none;
+  }
+
+  .workspace-shell.focus-mode :is(
+      .title-region,
+      .command-region,
+      .activity-region,
+      .navigator-region,
+      .tabs-region,
+      .outline-region,
+      .status-region
+    ) {
+    opacity: var(--ui-opacity-focus-mode);
+    transition: opacity var(--ui-motion-standard) var(--ui-motion-ease);
+  }
+
+  .workspace-shell.focus-mode :is(
+      .title-region,
+      .command-region,
+      .activity-region,
+      .navigator-region,
+      .tabs-region,
+      .outline-region,
+      .status-region
+    ):focus-within,
+  .workspace-shell.focus-mode :is(
+      .title-region,
+      .command-region,
+      .activity-region,
+      .navigator-region,
+      .tabs-region,
+      .outline-region,
+      .status-region
+    ):hover {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .workspace-shell.focus-mode :is(
+        .title-region,
+        .command-region,
+        .activity-region,
+        .navigator-region,
+        .tabs-region,
+        .outline-region,
+        .status-region
+      ) {
+      transition: none;
+    }
+  }
+}

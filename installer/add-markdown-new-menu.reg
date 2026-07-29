@@ -1,0 +1,30 @@
+Windows Registry Editor Version 5.00
+
+; Add .md file extension association
+[HKEY_CLASSES_ROOT\.md]
+@="Markdown.Document"
+"Content Type"="text/markdown"
+"PerceivedType"="text"
+
+; Create Markdown.Document class
+[HKEY_CLASSES_ROOT\Markdown.Document]
+@="Markdown Document"
+
+; Set default icon (uses Notepad icon, can be changed to custom icon path)
+[HKEY_CLASSES_ROOT\Markdown.Document\DefaultIcon]
+@="%SystemRoot%\\System32\\notepad.exe,0"
+
+; Add shell open command
+[HKEY_CLASSES_ROOT\Markdown.Document\shell]
+@="open"
+
+[HKEY_CLASSES_ROOT\Markdown.Document\shell\open]
+@="Open"
+
+[HKEY_CLASSES_ROOT\Markdown.Document\shell\open\command]
+@="notepad.exe \"%1\""
+
+; Add "New" context menu entry for .md files
+[HKEY_CLASSES_ROOT\.md\ShellNew]
+"NullFile"=""
+"FileName"=""

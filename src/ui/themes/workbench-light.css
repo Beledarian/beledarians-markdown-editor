@@ -1,0 +1,41 @@
+@layer themes {
+  .workspace-shell[data-theme='workbench-light'],
+  .workspace-shell[data-style='workbench'][data-color-mode='light'] {
+    color-scheme: light;
+    --ui-bg-shell: var(--color-workbench-shell-light);
+    --ui-bg-panel: var(--color-workbench-panel-light);
+    --ui-bg-raised: var(--color-workbench-raised-light);
+    --ui-bg-chrome: var(--color-workbench-chrome-light);
+    --ui-bg-editor: var(--color-workbench-editor-light);
+    --ui-bg-render: var(--color-workbench-render-light);
+    --ui-bg-status: var(--color-workbench-status-light);
+    --ui-bg-input: var(--color-workbench-render-light);
+    --ui-bg-code: var(--color-workbench-code-light);
+    --ui-bg-marginalia: var(--color-workbench-editor-light);
+    --ui-text: var(--color-workbench-text-light);
+    --ui-text-muted: var(--color-workbench-muted-light);
+    --ui-text-subtle: var(--color-workbench-subtle-light);
+    --ui-text-body: var(--color-workbench-body-light);
+    --ui-text-on-action: var(--color-control-on-dark);
+    --ui-border: var(--color-workbench-border-light);
+    --ui-border-input: var(--color-workbench-border-light);
+    --ui-action: var(--color-workbench-accent-light);
+    --ui-action-text: var(--color-workbench-accent-text-light);
+    --ui-selection: var(--color-workbench-selected-light);
+    --ui-focus: var(--color-workbench-accent-light);
+    --ui-success: var(--color-workbench-success-light);
+    --ui-warning: var(--color-workbench-warning-light);
+    --ui-danger: var(--color-workbench-danger-light);
+    --ui-syntax-a: var(--color-workbench-syntax-a-light);
+    --ui-syntax-b: var(--color-workbench-syntax-b-light);
+    --ui-paper-border: var(--color-workbench-border-light);
+    --ui-paper-shadow: none;
+    --ui-overlay: var(--color-overlay-light);
+    --ui-modal-shadow: var(--shadow-modal-light);
+    --ui-font-chrome: var(--font-sans);
+    --ui-font-source: var(--font-mono);
+    --ui-font-render: var(--font-sans);
+    --ui-radius-control: var(--primitive-radius-sm);
+    --ui-radius-surface: var(--primitive-radius-xs);
+  }
+}

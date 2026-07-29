@@ -1,0 +1,75 @@
+@layer components {
+  .workspace-shell button {
+    min-height: var(--ui-control-height);
+    padding: 0 var(--ui-space-5);
+    border: var(--ui-hairline) solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: transparent;
+    color: var(--ui-text);
+    font: inherit;
+    font-size: var(--ui-font-size-sm);
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      color var(--ui-motion-fast) var(--ui-motion-ease),
+      background-color var(--ui-motion-fast) var(--ui-motion-ease),
+      border-color var(--ui-motion-fast) var(--ui-motion-ease);
+  }
+
+  .workspace-shell button:hover {
+    border-color: var(--ui-action);
+    background: var(--ui-bg-raised);
+    color: var(--ui-action-text);
+    filter: none;
+  }
+
+  .workspace-shell button:active {
+    background: var(--ui-selection);
+    transform: none;
+  }
+
+  .workspace-shell button:focus-visible {
+    outline: 2px solid var(--ui-accent-color);
+    outline-offset: var(--ui-focus-ring-offset);
+  }
+
+  .workspace-shell button:disabled,
+  .workspace-shell button[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: var(--ui-opacity-disabled);
+  }
+
+  .workspace-shell :is(.primary-btn, button.primary) {
+    border-color: var(--ui-action);
+    background: var(--ui-action);
+    color: var(--ui-text-on-action);
+  }
+
+  .workspace-shell :is(.secondary-btn, button.secondary) {
+    border-color: var(--ui-border);
+    background: transparent;
+    color: var(--ui-text);
+  }
+
+  .workspace-shell button.text-btn {
+    min-width: var(--ui-hit-target);
+    padding-inline: var(--ui-space-3);
+    border-color: transparent;
+    background: transparent;
+    color: var(--ui-text-muted);
+    text-decoration: none;
+  }
+
+  .workspace-shell button.text-btn:hover {
+    border-color: var(--ui-border);
+    background: var(--ui-bg-raised);
+    color: var(--ui-text);
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .workspace-shell button {
+      transition: none;
+    }
+  }
+}

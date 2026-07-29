@@ -1,0 +1,21 @@
+{
+  "name": "beledarians-md-cli",
+  "version": "1.0.0",
+  "description": "CLI & MCP Server for Beledarians Markdown Editor",
+  "private": true,
+  "license": "MIT",
+  "author": "Beledarian",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Beledarian/beledarians-markdown-editor.git",
+    "directory": "cli"
+  },
+  "type": "module",
+  "bin": {
+    "mdedit": "./md.mjs",
+    "md": "./md.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

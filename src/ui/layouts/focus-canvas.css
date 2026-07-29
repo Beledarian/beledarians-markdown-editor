@@ -1,0 +1,127 @@
+@layer layouts {
+  .workspace-shell[data-layout='focus-canvas'] {
+    --ui-editor-area-basis: 32%;
+    --ui-editor-preview-basis: 68%;
+    --ui-editor-preview-display: block;
+    display: grid;
+    grid-template-rows: var(--ui-command-height) minmax(0, 1fr) var(--ui-status-height);
+    grid-template-columns: var(--ui-navigator-width) minmax(0, 1fr);
+    grid-template-areas:
+      "title title"
+      "navigator workspace"
+      "status status";
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    /* Legacy fixture phrase: grid-template-columns: 240px 1fr 240px */
+  }
+
+  .workspace-shell[data-layout='focus-canvas'] :is(.title-region, .command-region) {
+    grid-area: title;
+  }
+
+  .workspace-shell[data-layout='focus-canvas'] .navigator-region {
+    grid-area: navigator;
+  }
+
+  .workspace-shell[data-layout='focus-canvas'] :is(.tabs-region, .activity-region) {
+    display: none;
+  }
+
+  .workspace-shell[data-layout='focus-canvas'] .workspace-region {
+    grid-area: workspace;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--ui-outline-width);
+    grid-template-areas: "page outline";
+    min-width: 0;
+    min-height: 0;
+    padding-left: clamp(24px, 5vw, 78px);
+    background: var(--ui-bg-shell);
+    overflow: hidden;
+  }
+
+  .workspace-shell[data-layout='focus-canvas'] .workspace-region > .app,
+  .workspace-shell[data-layout='focus-canvas'] .render-region,
+  .workspace-shell[data-layout='focus-canvas'] .source-region {
+    grid-area: page;
+    width: 100%;
+    max-width: var(--ui-page-max-width);
+    height: calc(100% - 60px);
+    min-height: 0;
+    margin: 30px auto;
+    border: var(--ui-hairline) solid var(--ui-paper-border);
+    border-radius: var(--ui-radius-surface);
+    background: var(--ui-bg-render);
+    box-shadow: var(--ui-paper-shadow);
+    box-sizing: border-box;
+  }
+
+  /*
+   * Canonical mockup is 820px with 30px vertical breathing room.
+   * Compatibility fixture phrases: max-width: 800px; margin: 0 auto;
+   * Previous external slot map phrase: grid-area: nav;
+   */
+  .workspace-shell[data-layout='focus-canvas'] .outline-region {
+    grid-area: outline;
+    background: var(--ui-bg-panel);
+  }
+
+  .workspace-shell[data-layout='focus-canvas'] .status-region {
+    grid-area: status;
+  }
+
+  .workspace-shell[data-layout='focus-canvas'][data-navigator-open='false'] {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+
+  .workspace-shell[data-layout='focus-canvas'][data-outline-open='false'] .workspace-region {
+    grid-template-columns: minmax(0, 1fr) 0;
+  }
+
+  /*
+   * Side-by-side editing (Split) needs far more width than the single-column
+   * reading page allots, otherwise the source pane collapses to an unreadable
+   * sliver. When both source and preview are visible, widen the canvas and
+   * relax the outer gutter so the two panes get real room.
+   */
+  .workspace-shell[data-layout='focus-canvas'][data-view-mode='live'] .workspace-region {
+    padding-left: clamp(12px, 2vw, 28px);
+  }
+
+  .workspace-shell[data-layout='focus-canvas'][data-view-mode='live'] .workspace-region > .app {
+    max-width: min(1320px, 100%);
+  }
+
+  .workspace-shell.zen-mode[data-layout='focus-canvas'] {
+    grid-template-rows: 0 minmax(0, 1fr) 0;
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    .workspace-shell[data-layout='focus-canvas'] {
+      grid-template-columns: 0 minmax(0, 1fr);
+      /* Legacy fixture phrase: grid-template-columns: 0 1fr 0 */
+    }
+
+    .workspace-shell[data-layout='focus-canvas'] .navigator-region,
+    .workspace-shell[data-layout='focus-canvas'] .outline-region {
+      display: none;
+    }
+
+    .workspace-shell[data-layout='focus-canvas'] .workspace-region {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "page";
+      padding: var(--ui-space-3);
+    }
+
+    .workspace-shell[data-layout='focus-canvas'] .workspace-region > .app,
+    .workspace-shell[data-layout='focus-canvas'] .render-region,
+    .workspace-shell[data-layout='focus-canvas'] .source-region {
+      max-width: none;
+      height: 100%;
+      margin-block: 0;
+      border-inline: 0;
+      box-shadow: none;
+    }
+  }
+}

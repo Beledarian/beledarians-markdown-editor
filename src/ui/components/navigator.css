@@ -1,0 +1,150 @@
+@layer components {
+  .workspace-shell .navigator-region {
+    min-width: 0;
+    min-height: 0;
+    border-right: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-panel);
+    color: var(--ui-text);
+    font-family: var(--ui-font-chrome);
+    font-size: var(--ui-font-size-md);
+    overflow: hidden;
+  }
+
+  .workspace-shell .navigator-region > .sidebar {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+
+  .workspace-shell .navigator-region :is(input, select) {
+    min-width: 0;
+    min-height: var(--ui-control-height);
+    border: var(--ui-hairline) solid var(--ui-border-input);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg-input);
+    color: var(--ui-text);
+    font: inherit;
+  }
+
+  .workspace-shell .navigator-region :is(input, select):focus-visible {
+    outline: 2px solid var(--ui-accent-color);
+    outline-offset: var(--ui-focus-ring-offset);
+  }
+
+  .workspace-shell .file-list {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .workspace-shell .file-item {
+    display: flex;
+    align-items: center;
+    min-height: var(--ui-row-height);
+    padding: 0 var(--ui-space-5);
+    border: 0;
+    background: transparent;
+    color: var(--ui-text-subtle);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .workspace-shell .file-item:hover {
+    background: var(--ui-bg-raised);
+    color: var(--ui-text);
+  }
+
+  .workspace-shell .file-item.active,
+  .workspace-shell .file-item[aria-current='page'] {
+    background: var(--ui-selection);
+    color: var(--ui-action-text);
+    font-weight: var(--ui-font-weight-selected);
+    box-shadow: inset var(--ui-focus-ring-width) 0 var(--ui-action);
+  }
+
+  .workspace-shell .file-item:focus-visible {
+    outline: 2px solid var(--ui-accent-color);
+    outline-offset: calc(0px - var(--ui-focus-ring-width));
+  }
+
+  .workspace-shell .empty-state,
+  .workspace-shell .loading {
+    padding: var(--ui-space-12);
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-sm);
+    text-align: center;
+  }
+
+  /* Workbench: explicit compact file tree. */
+  .workspace-shell[data-style='workbench'] .navigator-region {
+    font-family: var(--ui-font-chrome);
+  }
+
+  .workspace-shell[data-style='workbench'] .sidebar-header {
+    padding: var(--ui-space-6) var(--ui-space-5) var(--ui-space-4);
+  }
+
+  .workspace-shell[data-style='workbench'] .sidebar-tabs,
+  .workspace-shell[data-style='workbench'] .sidebar-search,
+  .workspace-shell[data-style='workbench'] .sidebar-actions {
+    padding-inline: var(--ui-space-5);
+  }
+
+  /* Reading Room: a quiet document shelf, with metadata beneath titles. */
+  .workspace-shell[data-style='reading'] .navigator-region {
+    padding: var(--ui-space-8) var(--ui-space-6);
+    background: var(--ui-bg-shell);
+  }
+
+  .workspace-shell[data-style='reading'] .sidebar-header,
+  .workspace-shell[data-style='reading'] .sidebar-actions,
+  .workspace-shell[data-style='reading'] .ignore-settings {
+    display: none;
+  }
+
+  .workspace-shell[data-style='reading'] .sidebar-tabs {
+    padding: 0 0 var(--ui-space-6);
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font-source);
+    font-size: var(--ui-font-size-xs);
+    letter-spacing: 0.1em;
+  }
+
+  .workspace-shell[data-style='reading'] .file-item {
+    min-height: var(--ui-row-height);
+    margin-bottom: var(--ui-space-1);
+    padding-inline: var(--ui-space-4);
+    border-radius: var(--ui-radius-control);
+    color: var(--ui-text-subtle);
+  }
+
+  .workspace-shell[data-style='reading'] .file-item.active,
+  .workspace-shell[data-style='reading'] .file-item[aria-current='page'] {
+    color: var(--ui-action);
+    box-shadow: none;
+  }
+
+  /* Operator: indexed, source-oriented navigator. */
+  .workspace-shell[data-style='operator'] .navigator-region {
+    background: var(--ui-bg-chrome);
+    font-family: var(--ui-font-source);
+  }
+
+  .workspace-shell[data-style='operator'] .sidebar-header,
+  .workspace-shell[data-style='operator'] .sidebar-search,
+  .workspace-shell[data-style='operator'] .sidebar-actions {
+    padding: var(--ui-space-5);
+    border-bottom: var(--ui-hairline) solid var(--ui-border);
+  }
+
+  .workspace-shell[data-style='operator'] .file-item {
+    display: grid;
+    grid-template-columns: calc(var(--ui-row-height) - var(--ui-space-2)) minmax(0, 1fr);
+    gap: var(--ui-space-4);
+    padding-inline: var(--ui-space-5);
+    font-size: var(--ui-font-size-md);
+  }
+}

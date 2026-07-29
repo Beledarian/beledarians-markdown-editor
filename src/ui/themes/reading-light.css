@@ -1,0 +1,45 @@
+@layer themes {
+  .workspace-shell[data-theme='reading-light'],
+  .workspace-shell[data-style='reading'][data-color-mode='light'] {
+    color-scheme: light;
+    --ui-shell-bg: var(--color-reading-shell-light);
+    --ui-paper-bg: var(--color-reading-paper-light);
+    --ui-text-color: var(--color-reading-ink-light);
+    --ui-font-rendering-family: var(--font-serif);
+    --ui-bg-shell: var(--color-reading-shell-light);
+    --ui-bg-panel: var(--color-reading-rail-light);
+    --ui-bg-raised: var(--color-reading-selected-light);
+    --ui-bg-chrome: var(--color-reading-paper-light);
+    --ui-bg-editor: var(--color-reading-marginalia-light);
+    --ui-bg-render: var(--color-reading-paper-light);
+    --ui-bg-status: var(--color-reading-status-light);
+    --ui-bg-input: var(--color-reading-paper-light);
+    --ui-bg-code: var(--color-reading-marginalia-light);
+    --ui-bg-marginalia: var(--color-reading-marginalia-light);
+    --ui-text: var(--color-reading-ink-light);
+    --ui-text-muted: var(--color-reading-muted-light);
+    --ui-text-subtle: var(--color-reading-shelf-text-light);
+    --ui-text-body: var(--color-reading-body-light);
+    --ui-text-on-action: var(--color-reading-paper-light);
+    --ui-border: var(--color-reading-rule-light);
+    --ui-border-input: var(--color-reading-rule-light);
+    --ui-action: var(--color-reading-evergreen);
+    --ui-action-text: var(--color-reading-evergreen);
+    --ui-selection: var(--color-reading-selected-light);
+    --ui-focus: var(--color-reading-evergreen);
+    --ui-success: var(--color-reading-success-light);
+    --ui-warning: var(--color-reading-warning-light);
+    --ui-danger: var(--color-reading-danger-light);
+    --ui-syntax-a: var(--color-reading-syntax-a-light);
+    --ui-syntax-b: var(--color-reading-syntax-b-light);
+    --ui-paper-border: var(--color-reading-page-border-light);
+    --ui-paper-shadow: var(--shadow-reading-paper-light);
+    --ui-overlay: var(--color-reading-overlay-light);
+    --ui-modal-shadow: var(--shadow-reading-modal-light);
+    --ui-font-chrome: var(--font-sans);
+    --ui-font-source: var(--font-mono);
+    --ui-font-render: var(--font-serif);
+    --ui-radius-control: var(--primitive-radius-md);
+    --ui-radius-surface: var(--primitive-radius-square);
+  }
+}

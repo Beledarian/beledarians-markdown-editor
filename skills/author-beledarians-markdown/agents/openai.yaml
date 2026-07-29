@@ -1,0 +1,4 @@
+interface:
+  display_name: "Author Beledarians Markdown"
+  short_description: "Write safe custom Markdown for Beledarians Editor"
+  default_prompt: "Use $author-beledarians-markdown to format this document with supported custom Markdown syntax."

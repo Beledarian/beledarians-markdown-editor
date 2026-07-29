@@ -1,0 +1,119 @@
+@layer components {
+  .workspace-shell .tabs-region {
+    position: relative;
+    min-width: 0;
+    height: var(--ui-tab-height);
+    border-bottom: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-chrome);
+    color: var(--ui-text-muted);
+    overflow: hidden;
+  }
+
+  .workspace-shell .tabs-region::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--ui-space-8);
+    background: linear-gradient(to right, transparent, var(--ui-bg-chrome));
+    border-right: var(--ui-hairline) solid var(--ui-border);
+    pointer-events: none;
+  }
+
+  .workspace-shell .tab-bar {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+
+  .workspace-shell .tab {
+    display: inline-flex;
+    flex: 0 1 auto;
+    align-items: center;
+    min-width: 0;
+    max-width: 200px;
+    height: 100%;
+    padding: 0 var(--ui-space-6);
+    gap: var(--ui-space-4);
+    border: 0;
+    border-right: var(--ui-hairline) solid var(--ui-border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font-chrome);
+    font-size: var(--ui-font-size-md);
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition:
+      color var(--ui-motion-fast) var(--ui-motion-ease),
+      background-color var(--ui-motion-fast) var(--ui-motion-ease);
+  }
+
+  .workspace-shell .tab-bar::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .workspace-shell .tab:hover {
+    border-color: var(--ui-border);
+    background: var(--ui-bg-raised);
+    color: var(--ui-text);
+  }
+
+  .workspace-shell .tab.active,
+  .workspace-shell .tab[aria-selected='true'] {
+    background: var(--ui-bg-panel);
+    color: var(--ui-text);
+    box-shadow: inset 0 var(--ui-hairline) var(--ui-action);
+  }
+
+  .workspace-shell .tab:focus-visible {
+    outline: 2px solid var(--ui-accent-color);
+    outline-offset: calc(0px - var(--ui-focus-ring-width));
+  }
+
+  .workspace-shell .tab-name {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .workspace-shell .tab-unsaved-dot {
+    flex: 0 0 auto;
+    color: var(--ui-warning);
+  }
+
+  .workspace-shell .tab-close {
+    min-width: var(--ui-hit-target);
+    min-height: var(--ui-hit-target);
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    color: var(--ui-text-muted);
+  }
+
+  .workspace-shell[data-style='operator'] .tab {
+    font-family: var(--ui-font-source);
+    font-size: var(--ui-font-size-sm);
+  }
+
+  .workspace-shell[data-style='operator'] .tab.active,
+  .workspace-shell[data-style='operator'] .tab[aria-selected='true'] {
+    background: var(--ui-bg-editor);
+    box-shadow: inset 0 calc(0px - var(--ui-hairline)) var(--ui-action);
+  }
+}

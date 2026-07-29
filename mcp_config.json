@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "mdedit": {
+      "command": "node",
+      "args": ["cli/md.mjs", "mcp"],
+      "description": "Beledarians Markdown Editor & Viewer CLI & MCP Server"
+    }
+  }
+}

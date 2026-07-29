@@ -1,0 +1,56 @@
+@layer components {
+  .workspace-shell .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ui-z-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ui-space-8);
+    background: var(--ui-overlay);
+  }
+
+  .workspace-shell :is(.modal-content, .search-modal, .find-replace-content) {
+    width: var(--ui-modal-inline-size);
+    max-height: var(--ui-modal-block-size);
+    border: var(--ui-hairline) solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg-panel);
+    color: var(--ui-text);
+    box-shadow: var(--ui-modal-shadow);
+    overflow: auto;
+  }
+
+  .workspace-shell .modal-header {
+    display: flex;
+    align-items: center;
+    min-height: var(--ui-command-height);
+    padding: 0 var(--ui-space-8);
+    border-bottom: var(--ui-hairline) solid var(--ui-border);
+  }
+
+  .workspace-shell .modal-header h2 {
+    margin: 0;
+    font-size: var(--ui-font-size-body);
+    font-weight: var(--ui-font-weight-selected);
+  }
+
+  .workspace-shell .modal-header .close-btn {
+    margin-left: auto;
+  }
+
+  .workspace-shell :is(.modal-body, .modal-footer) {
+    padding: var(--ui-space-8);
+  }
+
+  .workspace-shell[data-style='operator'] :is(.modal-content, .search-modal, .find-replace-content) {
+    font-family: var(--ui-font-source);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .workspace-shell .modal-overlay,
+    .workspace-shell :is(.modal-content, .search-modal, .find-replace-content) {
+      scroll-behavior: auto;
+    }
+  }
+}

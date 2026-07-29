@@ -1,0 +1,304 @@
+@layer components {
+  .workspace-shell .mcp-setup-modal {
+    width: min(92vw, 620px);
+    max-height: min(86vh, 720px);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .workspace-shell .mcp-setup-header {
+    justify-content: space-between;
+    gap: var(--ui-space-6);
+    min-height: 64px;
+  }
+
+  .mcp-setup-kicker {
+    margin: 0 0 var(--ui-space-1);
+    color: var(--ui-text-subtle);
+    font-family: var(--ui-font-source);
+    font-size: var(--ui-font-size-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mcp-icon-button {
+    display: inline-grid;
+    width: var(--ui-hit-target);
+    height: var(--ui-hit-target);
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-radius: var(--ui-radius-control);
+    background: transparent;
+    color: var(--ui-text-muted);
+    cursor: pointer;
+  }
+
+  .mcp-icon-button:hover {
+    background: var(--ui-bg-raised);
+    color: var(--ui-text);
+  }
+
+  .mcp-setup-body,
+  .mcp-guide-page {
+    overflow-y: auto;
+  }
+
+  .mcp-setup-intro,
+  .mcp-guide-lead {
+    margin: 0 0 var(--ui-space-8);
+    color: var(--ui-text-body);
+    font-size: var(--ui-font-size-md);
+    line-height: var(--ui-line-body);
+  }
+
+  .mcp-setup-intro code,
+  .mcp-guide-page code {
+    font-family: var(--ui-font-source);
+  }
+
+  .mcp-agent-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border: var(--ui-hairline) solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+  }
+
+  .mcp-agent-option {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--ui-space-6);
+    align-items: start;
+    min-height: 58px;
+    padding: var(--ui-space-6);
+    background: var(--ui-bg-panel);
+    cursor: pointer;
+  }
+
+  .mcp-agent-option + .mcp-agent-option {
+    border-top: var(--ui-hairline) solid var(--ui-border);
+  }
+
+  .mcp-agent-option:hover {
+    background: var(--ui-bg-raised);
+  }
+
+  .mcp-agent-option input {
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    accent-color: var(--ui-action);
+  }
+
+  .mcp-skill-option {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--ui-space-6);
+    align-items: start;
+    margin-top: var(--ui-space-6);
+    padding: var(--ui-space-6);
+    border: var(--ui-hairline) solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg-raised);
+    cursor: pointer;
+  }
+
+  .mcp-skill-option:hover {
+    border-color: var(--ui-action);
+  }
+
+  .mcp-skill-option input {
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    accent-color: var(--ui-action);
+  }
+
+  .mcp-skill-option small {
+    color: var(--ui-text-subtle);
+    font-family: var(--ui-font-source);
+    font-size: var(--ui-font-size-xs);
+    line-height: 1.45;
+  }
+
+  .mcp-agent-copy {
+    display: grid;
+    gap: var(--ui-space-1);
+  }
+
+  .mcp-agent-copy strong {
+    color: var(--ui-text);
+    font-size: var(--ui-font-size-body);
+    font-weight: var(--ui-font-weight-selected);
+  }
+
+  .mcp-agent-copy span {
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-sm);
+    line-height: 1.45;
+  }
+
+  .mcp-guide-link {
+    display: inline-flex;
+    gap: var(--ui-space-3);
+    align-items: center;
+    margin-top: var(--ui-space-8);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ui-action-text);
+    font: inherit;
+    font-size: var(--ui-font-size-md);
+    cursor: pointer;
+  }
+
+  .mcp-guide-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .workspace-shell .mcp-setup-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ui-space-6);
+    border-top: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-chrome);
+  }
+
+  .mcp-footer-actions {
+    display: flex;
+    gap: var(--ui-space-3);
+  }
+
+  .mcp-button {
+    min-height: var(--ui-control-height);
+    padding: 0 var(--ui-space-6);
+    border: var(--ui-hairline) solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg-panel);
+    color: var(--ui-text);
+    font: inherit;
+    font-size: var(--ui-font-size-md);
+    cursor: pointer;
+  }
+
+  .mcp-button:hover {
+    background: var(--ui-bg-raised);
+  }
+
+  .mcp-button-primary {
+    border-color: var(--ui-action);
+    background: var(--ui-action);
+    color: var(--ui-text-on-action);
+    font-weight: var(--ui-font-weight-selected);
+  }
+
+  .mcp-button-primary:hover {
+    filter: brightness(1.08);
+  }
+
+  .mcp-button:disabled {
+    cursor: wait;
+    opacity: var(--ui-opacity-disabled);
+  }
+
+  .mcp-button-quiet {
+    border-color: transparent;
+    background: transparent;
+    color: var(--ui-text-muted);
+  }
+
+  .mcp-guide-page {
+    color: var(--ui-text-body);
+  }
+
+  .mcp-guide-steps {
+    display: grid;
+    gap: var(--ui-space-8);
+    margin: 0;
+    padding-left: 24px;
+  }
+
+  .mcp-guide-steps > li {
+    padding-left: var(--ui-space-3);
+  }
+
+  .mcp-guide-steps strong {
+    color: var(--ui-text);
+    font-size: var(--ui-font-size-body);
+  }
+
+  .mcp-guide-steps p {
+    margin: var(--ui-space-2) 0 0;
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-md);
+  }
+
+  .mcp-command-list {
+    display: grid;
+    gap: var(--ui-space-3);
+    margin-top: var(--ui-space-4);
+  }
+
+  .mcp-command {
+    display: grid;
+    gap: var(--ui-space-2);
+    padding: var(--ui-space-4);
+    border: var(--ui-hairline) solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg-code);
+  }
+
+  .mcp-command span {
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-xs);
+  }
+
+  .mcp-command code {
+    overflow-x: auto;
+    color: var(--ui-text);
+    font-size: var(--ui-font-size-sm);
+    white-space: nowrap;
+  }
+
+  .mcp-guide-note {
+    margin-top: var(--ui-space-8);
+    padding: var(--ui-space-4);
+    border-left: 2px solid var(--ui-action);
+    background: var(--ui-bg-raised);
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-sm);
+    line-height: 1.5;
+  }
+
+  .mcp-icon-button:focus-visible,
+  .mcp-agent-option input:focus-visible,
+  .mcp-skill-option input:focus-visible,
+  .mcp-guide-link:focus-visible,
+  .mcp-button:focus-visible {
+    outline: var(--ui-focus-ring-width) solid var(--ui-focus);
+    outline-offset: var(--ui-focus-ring-offset);
+  }
+
+  @media (max-width: 560px) {
+    .workspace-shell .mcp-setup-overlay {
+      padding: var(--ui-space-4);
+    }
+
+    .workspace-shell .mcp-setup-footer {
+      align-items: stretch;
+      flex-direction: column-reverse;
+    }
+
+    .mcp-footer-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .mcp-button {
+      min-height: 38px;
+    }
+  }
+}

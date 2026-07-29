@@ -1,0 +1,288 @@
+/*
+ * Boundary: @uiw/react-md-editor generated DOM, inline sizes, and package CSS.
+ * Reason: the package owns specificity and injects height/width declarations.
+ * Scope: only .w-md-editor/.wmde-markdown descendants inside WorkspaceShell.
+ * Review: remove !important declarations when the editor exposes a stable
+ * class or theme API for these roles.
+ */
+@layer adapters {
+  .workspace-shell .w-md-editor {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    border: 0 !important;
+    border-radius: var(--ui-radius-surface) !important;
+    background: var(--ui-bg-editor) !important;
+    color: var(--ui-text) !important;
+    box-shadow: none !important;
+    font-family: var(--ui-font-source) !important;
+    overflow: hidden !important;
+  }
+
+  /*
+   * Formatting and view controls live in the application command region.
+   * Suppress the editor's duplicate toolbar so third-party chrome never
+   * becomes the visual hierarchy.
+   */
+  .workspace-shell .w-md-editor-toolbar,
+  .workspace-shell .w-md-editor-bar {
+    display: none !important;
+  }
+
+  .workspace-shell .w-md-editor-content {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    background: var(--ui-bg-editor) !important;
+    box-sizing: border-box !important;
+  }
+
+  .workspace-shell .w-md-editor-area {
+    display: block !important;
+    flex: 1 1 var(--ui-editor-area-basis) !important;
+    width: var(--ui-editor-area-basis) !important;
+    max-width: var(--ui-editor-area-basis) !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    overflow: auto !important;
+    overscroll-behavior: contain !important;
+    background: var(--ui-bg-editor) !important;
+  }
+
+  .workspace-shell .w-md-editor-preview {
+    display: var(--ui-editor-preview-display) !important;
+    flex: 1 1 var(--ui-editor-preview-basis) !important;
+    width: var(--ui-editor-preview-basis) !important;
+    max-width: var(--ui-editor-preview-basis) !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    overflow: auto !important;
+    overscroll-behavior: contain !important;
+    border-left: var(--ui-hairline) solid var(--ui-border) !important;
+    background: var(--ui-bg-render) !important;
+    color: var(--ui-text-body) !important;
+    box-sizing: border-box !important;
+  }
+
+  /*
+   * App.css still carries UIW's legacy 50/50 live-mode dimensions. Keep the
+   * composition presets authoritative until that legacy rule is retired.
+   */
+  .workspace-shell[data-view-mode='live'] .w-md-editor-show-live .w-md-editor-area {
+    flex-basis: var(--ui-editor-area-basis) !important;
+    width: var(--ui-editor-area-basis) !important;
+    max-width: var(--ui-editor-area-basis) !important;
+  }
+
+  .workspace-shell[data-view-mode='live'] .w-md-editor-show-live .w-md-editor-preview {
+    flex-basis: var(--ui-editor-preview-basis) !important;
+    width: var(--ui-editor-preview-basis) !important;
+    max-width: var(--ui-editor-preview-basis) !important;
+  }
+
+  .workspace-shell[data-view-mode='edit'] {
+    --ui-editor-area-basis: 100%;
+    --ui-editor-preview-basis: 0%;
+    --ui-editor-preview-display: none;
+  }
+
+  .workspace-shell[data-view-mode='preview'] {
+    --ui-editor-area-basis: 0%;
+    --ui-editor-preview-basis: 100%;
+    --ui-editor-preview-display: block;
+  }
+
+  .workspace-shell[data-view-mode='preview'] .w-md-editor-area,
+  .workspace-shell .w-md-editor-show-preview .w-md-editor-area {
+    display: none !important;
+  }
+
+  .workspace-shell .w-md-editor-show-edit .w-md-editor-preview {
+    display: none !important;
+  }
+
+  .workspace-shell .w-md-editor-text {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100% !important;
+    padding: var(--ui-space-8) var(--ui-space-6) !important;
+    background: var(--ui-bg-editor) !important;
+    color: var(--ui-text) !important;
+    font-family: var(--ui-font-source) !important;
+  }
+
+  .workspace-shell .w-md-editor-text-pre,
+  .workspace-shell .w-md-editor-text-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100% !important;
+    padding: 0 !important;
+    background: transparent !important;
+    color: var(--ui-text) !important;
+    caret-color: var(--ui-action) !important;
+    font-family: var(--ui-font-source) !important;
+    font-size: var(--ui-font-size-body) !important;
+    line-height: var(--ui-line-source) !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    box-sizing: border-box !important;
+  }
+
+  .workspace-shell .w-md-editor-text-input {
+    padding: inherit !important;
+    overflow: hidden !important;
+  }
+
+  .workspace-shell .w-md-editor-text-pre > code {
+    color: inherit !important;
+    font: inherit !important;
+  }
+
+  .workspace-shell .wmde-markdown {
+    min-height: 100% !important;
+    padding: var(--ui-space-page) !important;
+    background: var(--ui-bg-render) !important;
+    color: var(--ui-text-body) !important;
+    font-family: var(--ui-font-render) !important;
+    font-size: var(--ui-font-size-body) !important;
+    line-height: var(--ui-line-body) !important;
+    box-sizing: border-box !important;
+  }
+
+  .workspace-shell .wmde-markdown :is(h1, h2, h3, h4, h5, h6) {
+    color: var(--ui-text) !important;
+    font-family: var(--ui-font-render) !important;
+  }
+
+  .workspace-shell .wmde-markdown mark {
+    border-radius: 3px;
+    padding: 0.12em 0.3em;
+    margin: 0 0.05em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .workspace-shell .wmde-markdown mark.highlight {
+    background-color: rgba(255, 255, 0, 0.6) !important;
+    color: #000000 !important;
+  }
+
+  .workspace-shell .wmde-markdown h1 {
+    font-size: var(--ui-font-size-title) !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  .workspace-shell .wmde-markdown :is(code, pre) {
+    background: var(--ui-bg-code) !important;
+    color: var(--ui-syntax-a) !important;
+    font-family: var(--ui-font-source) !important;
+  }
+
+  .workspace-shell .wmde-markdown a {
+    color: var(--ui-action) !important;
+  }
+
+  .workspace-shell .wmde-markdown :is(hr, blockquote, table, th, td) {
+    border-color: var(--ui-border) !important;
+  }
+
+  /* Workbench: source/render pair stays the dominant equal composition. */
+  .workspace-shell[data-style='workbench'] .w-md-editor-area {
+    background: var(--ui-bg-editor) !important;
+  }
+
+  .workspace-shell[data-style='workbench'] .w-md-editor-preview {
+    background: var(--ui-bg-render) !important;
+  }
+
+  /* Reading Room: source is editorial marginalia inside the paper flow. */
+  .workspace-shell[data-style='reading'] .w-md-editor {
+    background: var(--ui-bg-render) !important;
+  }
+
+  .workspace-shell[data-style='reading'] .w-md-editor-content {
+    gap: var(--ui-space-12) !important;
+    padding: 42px var(--ui-space-page) !important;
+    background: var(--ui-bg-render) !important;
+    box-sizing: border-box !important;
+  }
+
+  .workspace-shell[data-style='reading'] .w-md-editor-area {
+    height: calc(100% - var(--ui-space-12) - var(--ui-space-12)) !important;
+    max-height: none !important;
+    margin-block: var(--ui-space-12) !important;
+    border-left: var(--ui-focus-ring-width) solid var(--ui-action) !important;
+    background: var(--ui-bg-marginalia) !important;
+  }
+
+  .workspace-shell[data-style='reading'] .w-md-editor-preview {
+    border-left: 0 !important;
+    background: var(--ui-bg-render) !important;
+  }
+
+  .workspace-shell[data-style='reading'] .wmde-markdown {
+    padding: 0 !important;
+  }
+
+  .workspace-shell[data-style='reading'] .wmde-markdown :is(p, li, blockquote) {
+    color: var(--ui-text-body) !important;
+    font-family: var(--ui-font-render) !important;
+  }
+
+  /*
+   * Reading Room + Split: the "marginalia" source column is unusable when it
+   * collapses to ~150px, so in side-by-side (live) mode give it a balanced
+   * basis and a hard minimum width, and relax the heavy editorial padding so
+   * neither pane is crushed. Preview-only reading keeps the narrow-margin feel.
+   */
+  .workspace-shell[data-style='reading'][data-view-mode='live'] {
+    --ui-editor-area-basis: 46%;
+    --ui-editor-preview-basis: 54%;
+  }
+
+  .workspace-shell[data-style='reading'][data-view-mode='live'] .w-md-editor-content {
+    padding: var(--ui-space-8) var(--ui-space-8) !important;
+    gap: var(--ui-space-8) !important;
+  }
+
+  .workspace-shell[data-style='reading'][data-view-mode='live'] .w-md-editor-area {
+    min-width: 300px !important;
+    margin-block: 0 !important;
+    height: 100% !important;
+  }
+
+  /* Operator: dense source first, with a narrower system-UI proof. */
+  .workspace-shell[data-style='operator'] .w-md-editor-preview {
+    background: var(--ui-bg-render) !important;
+    font-family: var(--ui-font-render) !important;
+  }
+
+  .workspace-shell[data-style='operator'] .wmde-markdown {
+    padding: var(--ui-space-page) !important;
+    font-family: var(--ui-font-render) !important;
+  }
+
+  .workspace-shell[data-style='operator'] .wmde-markdown :is(p, li, blockquote) {
+    color: var(--ui-text-body) !important;
+    font-family: var(--ui-font-render) !important;
+  }
+
+  @media (max-width: 900px) {
+    .workspace-shell[data-style='reading'] .w-md-editor-content {
+      gap: var(--ui-space-3) !important;
+      padding: var(--ui-space-6) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .workspace-shell :is(.w-md-editor, .w-md-editor *, .wmde-markdown, .wmde-markdown *) {
+      scroll-behavior: auto !important;
+      transition-duration: 0ms !important;
+      animation-duration: 0ms !important;
+    }
+  }
+}

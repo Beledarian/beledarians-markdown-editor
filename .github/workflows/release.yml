@@ -1,0 +1,200 @@
+name: Build unsigned releases
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unsigned-release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_OPTIONS: --max-old-space-size=1024
+
+jobs:
+  verify:
+    name: Verify source
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - run: npm ci
+
+      - name: Check release version
+        shell: bash
+        run: |
+          node -e "const p=require('./package.json');const t=require('./src-tauri/tauri.conf.json');if(p.version!==t.version){console.error('package.json and tauri.conf.json versions differ');process.exit(1)}"
+          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${GITHUB_REF_NAME}" != "v$(node -p "require('./src-tauri/tauri.conf.json').version")" ]]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match the application version"
+            exit 1
+          fi
+
+      - run: npm run lint
+      - run: npm test -- --run --pool=forks --maxWorkers=2
+      - run: node --test cli/contract.test.mjs
+      - run: npm run audit:design
+      - run: npm run build
+      - name: Test Rust backend
+        working-directory: src-tauri
+        run: cargo test --locked
+
+  desktop:
+    name: ${{ matrix.label }}
+    needs: verify
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: macOS Apple Silicon
+            artifact: unsigned-macos-arm64
+            platform: macos-latest
+            rust_targets: aarch64-apple-darwin
+            args: --target aarch64-apple-darwin --bundles app,dmg
+          - label: macOS Intel
+            artifact: unsigned-macos-x64
+            platform: macos-latest
+            rust_targets: x86_64-apple-darwin
+            args: --target x86_64-apple-darwin --bundles app,dmg
+          - label: Linux x64
+            artifact: unsigned-linux-x64
+            platform: ubuntu-22.04
+            rust_targets: ''
+            args: --bundles deb,appimage
+          - label: Linux ARM64
+            artifact: unsigned-linux-arm64
+            platform: ubuntu-24.04-arm
+            rust_targets: ''
+            args: --bundles deb,appimage
+          - label: Windows x64
+            artifact: unsigned-windows-x64
+            platform: windows-latest
+            rust_targets: ''
+            args: --bundles nsis,msi
+          - label: Windows ARM64
+            artifact: unsigned-windows-arm64
+            platform: windows-11-arm
+            rust_targets: ''
+            args: --bundles nsis,msi
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_targets }}
+
+      - name: Install Linux build dependencies
+        if: startsWith(matrix.platform, 'ubuntu-')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - run: npm ci
+
+      - name: Build unsigned desktop bundles
+        uses: tauri-apps/tauri-action@v1
+        with:
+          args: ${{ matrix.args }}
+
+      - name: Upload unsigned desktop bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          if-no-files-found: error
+          path: |
+            src-tauri/target/**/release/bundle/**/*.dmg
+            src-tauri/target/**/release/bundle/**/*.app/**
+            src-tauri/target/**/release/bundle/**/*.AppImage
+            src-tauri/target/**/release/bundle/**/*.deb
+            src-tauri/target/**/release/bundle/**/*.msi
+            src-tauri/target/**/release/bundle/**/*.exe
+
+  android:
+    name: Android debug APK
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: npm ci
+      - run: npm run android:build
+
+      - name: Build unsigned debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+
+      - name: Upload unsigned Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-debug
+          if-no-files-found: error
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  publish:
+    name: Publish unsigned prerelease
+    if: github.ref_type == 'tag'
+    needs:
+      - desktop
+      - android
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: '*'
+          path: release-artifacts
+          merge-multiple: true
+
+      - name: Publish unsigned prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          generate_release_notes: true
+          body: |
+            Personal pre-release builds for evaluation only.
+
+            Desktop artifacts are unsigned. The Android APK uses Android's
+            automatic debug key and is not production-signed. Operating systems
+            may display security warnings. These builds are not
+            production-ready, notarized, or supported.
+          files: release-artifacts/**/*

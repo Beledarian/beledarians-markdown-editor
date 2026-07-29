@@ -1,0 +1,166 @@
+@layer primitives {
+  :root {
+    /* Typography */
+    --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+
+    /* Shared geometry and motion */
+    --primitive-hairline: 1px;
+    --primitive-focus-ring: 2px;
+    --primitive-focus-offset: 2px;
+    --primitive-radius-square: 0;
+    --primitive-radius-xs: 2px;
+    --primitive-radius-sm: 3px;
+    --primitive-radius-md: 4px;
+    --primitive-duration-fast: 120ms;
+    --primitive-duration-standard: 160ms;
+    --primitive-ease: ease;
+
+    /* Workbench Dark — canonical graphite and copper. */
+    --color-workbench-shell-dark: #171A1B;
+    --color-workbench-panel-dark: #202426;
+    --color-workbench-raised-dark: #252A2C;
+    --color-workbench-chrome-dark: #141718;
+    --color-workbench-editor-dark: #1B1F21;
+    --color-workbench-render-dark: #24292B;
+    --color-workbench-status-dark: #111415;
+    --color-workbench-code-dark: #191D1E;
+    --color-workbench-border-dark: #343A3C;
+    --color-workbench-text-dark: #E4E8E4;
+    --color-workbench-muted-dark: #8F9994;
+    --color-workbench-subtle-dark: #59615D;
+    --color-workbench-body-dark: #C3CBC6;
+    --color-workbench-accent-dark: #D58C4B;
+    --color-workbench-accent-text-dark: #F2D4B9;
+    --color-workbench-selected-dark: #3B2A1F;
+    --color-workbench-success-dark: #7FB58D;
+    --color-workbench-warning-dark: #D6AE65;
+    --color-workbench-danger-dark: #D27B75;
+    --color-workbench-syntax-a-dark: #E0A66F;
+    --color-workbench-syntax-b-dark: #8EB8AE;
+
+    /* Workbench Light — low-glare technical paper. */
+    --color-workbench-shell-light: #E9ECE8;
+    --color-workbench-panel-light: #F5F7F3;
+    --color-workbench-raised-light: #EDF0EB;
+    --color-workbench-chrome-light: #E1E5E0;
+    --color-workbench-editor-light: #F7F8F5;
+    --color-workbench-render-light: #FFFFFF;
+    --color-workbench-status-light: #DDE2DC;
+    --color-workbench-code-light: #ECEBE6;
+    --color-workbench-border-light: #C8CEC8;
+    --color-workbench-text-light: #202522;
+    --color-workbench-muted-light: #6D766F;
+    --color-workbench-subtle-light: #7D877F;
+    --color-workbench-body-light: #515A54;
+    --color-workbench-accent-light: #9A5A27;
+    --color-workbench-accent-text-light: #713D16;
+    --color-workbench-selected-light: #F1DFCF;
+    --color-workbench-success-light: #477E54;
+    --color-workbench-warning-light: #926C24;
+    --color-workbench-danger-light: #A7443D;
+    --color-workbench-syntax-a-light: #9A5A27;
+    --color-workbench-syntax-b-light: #36736B;
+
+    /* Reading Room Light — locked canonical white-paper design. */
+    --color-reading-shell-light: #F4F1E9;
+    --color-reading-paper-light: #FFFEFA;
+    --color-reading-ink-light: #242824;
+    --color-reading-muted-light: #70776F;
+    --color-reading-rule-light: #D9D4C8;
+    --color-reading-evergreen: #2F665D;
+    --color-reading-selected-light: #DCE8E3;
+    --color-reading-rail-light: #EFEBE2;
+    --color-reading-status-light: #EBE7DE;
+    --color-reading-page-border-light: #E4DFD5;
+    --color-reading-body-light: #404740;
+    --color-reading-shelf-text-light: #5F665F;
+    --color-reading-marginalia-light: #F1F3EE;
+    --color-reading-syntax-a-light: #8A4B32;
+    --color-reading-syntax-b-light: #2F665D;
+    --color-reading-success-light: #477E54;
+    --color-reading-warning-light: #8B6824;
+    --color-reading-danger-light: #9B4038;
+    --color-reading-overlay-light: rgba(36, 40, 36, 0.44);
+    --shadow-reading-paper-light: 0 8px 26px rgba(56, 50, 39, 0.07);
+    --shadow-reading-modal-light: 0 14px 38px rgba(56, 50, 39, 0.18);
+
+    /* Reading Room Dark — the same room and paper hierarchy in dark ink. */
+    --color-reading-shell-dark: #171816;
+    --color-reading-paper-dark: #23241F;
+    --color-reading-ink-dark: #EEEDE5;
+    --color-reading-muted-dark: #9E9E94;
+    --color-reading-rule-dark: #3C3D37;
+    --color-reading-evergreen-dark: #7EAA9D;
+    --color-reading-selected-dark: #263A33;
+    --color-reading-rail-dark: #1C1D1A;
+    --color-reading-status-dark: #151613;
+    --color-reading-page-border-dark: #41423B;
+    --color-reading-body-dark: #CAC9C0;
+    --color-reading-shelf-text-dark: #B7B7AE;
+    --color-reading-marginalia-dark: #1B211D;
+    --color-reading-syntax-a-dark: #D59A79;
+    --color-reading-syntax-b-dark: #87B4A7;
+    --color-reading-success-dark: #8CB796;
+    --color-reading-warning-dark: #D0AC65;
+    --color-reading-danger-dark: #D4857E;
+    --color-reading-overlay-dark: rgba(0, 0, 0, 0.62);
+    --shadow-reading-paper-dark: 0 8px 26px rgba(0, 0, 0, 0.22);
+    --shadow-reading-modal-dark: 0 14px 38px rgba(0, 0, 0, 0.42);
+
+    /* Operator Dark — canonical ink, amber, and truthful state. */
+    --color-operator-base-dark: #111312;
+    --color-operator-panel-dark: #181B19;
+    --color-operator-command-dark: #0D0F0E;
+    --color-operator-index-dark: #141715;
+    --color-operator-proof-dark: #1B1E1C;
+    --color-operator-input-dark: #161917;
+    --color-operator-active-dark: #1D211E;
+    --color-operator-focus-dark: #20251F;
+    --color-operator-border-dark: #303530;
+    --color-operator-input-border-dark: #3C423D;
+    --color-operator-ink-dark: #E1E4DC;
+    --color-operator-muted-dark: #899187;
+    --color-operator-subtle-dark: #58605A;
+    --color-operator-body-dark: #B6BDB4;
+    --color-operator-amber-dark: #D7B35F;
+    --color-operator-amber-text-dark: #EFD795;
+    --color-operator-selected-dark: #30291B;
+    --color-operator-success-dark: #93B58D;
+    --color-operator-warning-dark: #D7B35F;
+    --color-operator-danger-dark: #D38179;
+    --color-operator-syntax-b-dark: #91B3A9;
+
+    /* Operator Light — ink and ochre, not an inverted terminal. */
+    --color-operator-base-light: #EEEADE;
+    --color-operator-panel-light: #F7F4EA;
+    --color-operator-command-light: #E4DFD2;
+    --color-operator-index-light: #EAE5D8;
+    --color-operator-proof-light: #F0ECE2;
+    --color-operator-input-light: #F8F5EC;
+    --color-operator-active-light: #F7F4EA;
+    --color-operator-focus-light: #EEE7D2;
+    --color-operator-border-light: #C6C1B3;
+    --color-operator-input-border-light: #B7B09F;
+    --color-operator-ink-light: #24261F;
+    --color-operator-muted-light: #716F66;
+    --color-operator-subtle-light: #77776E;
+    --color-operator-body-light: #555950;
+    --color-operator-amber-light: #8A661D;
+    --color-operator-amber-text-light: #61460E;
+    --color-operator-selected-light: #EFE2BD;
+    --color-operator-success-light: #4F7B4B;
+    --color-operator-warning-light: #8A661D;
+    --color-operator-danger-light: #9E453A;
+    --color-operator-syntax-b-light: #326C63;
+
+    /* Shared state surfaces. */
+    --color-control-on-dark: #FFFFFF;
+    --color-control-on-light: #171A1B;
+    --color-overlay-dark: rgba(0, 0, 0, 0.62);
+    --color-overlay-light: rgba(23, 26, 27, 0.42);
+    --shadow-modal-dark: 0 14px 38px rgba(0, 0, 0, 0.42);
+    --shadow-modal-light: 0 14px 38px rgba(23, 26, 27, 0.18);
+  }
+}

@@ -1,0 +1,22 @@
+.highlight-toolbar {
+    position: absolute;
+    background-color: #333;
+    border-radius: 5px;
+    padding: 5px;
+    z-index: 1000;
+    display: flex;
+    gap: 5px;
+}
+
+.highlight-toolbar button {
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.highlight-toolbar button:hover {
+    background-color: #777;
+}

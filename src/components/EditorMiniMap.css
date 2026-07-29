@@ -1,0 +1,40 @@
+.editor-mini-map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--ui-bg-shell);
+    border-left: var(--ui-hairline) solid var(--ui-border);
+    box-sizing: border-box;
+    contain: paint;
+    opacity: 1;
+}
+
+.mini-map-text {
+    font-size: 2px;
+    line-height: 3px;
+    color: var(--ui-text);
+    opacity: 0.5;
+    white-space: pre-wrap;
+    word-break: break-all;
+    padding: 4px;
+}
+
+.mini-map-indicator {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: var(--ui-action);
+    opacity: 0.2;
+    border-top: var(--ui-hairline) solid var(--ui-action);
+    border-bottom: var(--ui-hairline) solid var(--ui-action);
+    box-sizing: border-box;
+    transition: top var(--ui-motion-fast) linear;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mini-map-indicator {
+        transition: none;
+    }
+}

@@ -1,0 +1,41 @@
+@layer themes {
+  .workspace-shell[data-theme='operator-light'],
+  .workspace-shell[data-style='operator'][data-color-mode='light'] {
+    color-scheme: light;
+    --ui-bg-shell: var(--color-operator-base-light);
+    --ui-bg-panel: var(--color-operator-panel-light);
+    --ui-bg-raised: var(--color-operator-active-light);
+    --ui-bg-chrome: var(--color-operator-command-light);
+    --ui-bg-editor: var(--color-operator-panel-light);
+    --ui-bg-render: var(--color-operator-proof-light);
+    --ui-bg-status: var(--color-operator-command-light);
+    --ui-bg-input: var(--color-operator-input-light);
+    --ui-bg-code: var(--color-operator-panel-light);
+    --ui-bg-marginalia: var(--color-operator-focus-light);
+    --ui-text: var(--color-operator-ink-light);
+    --ui-text-muted: var(--color-operator-muted-light);
+    --ui-text-subtle: var(--color-operator-subtle-light);
+    --ui-text-body: var(--color-operator-body-light);
+    --ui-text-on-action: var(--color-operator-base-light);
+    --ui-border: var(--color-operator-border-light);
+    --ui-border-input: var(--color-operator-input-border-light);
+    --ui-action: var(--color-operator-amber-light);
+    --ui-action-text: var(--color-operator-amber-text-light);
+    --ui-selection: var(--color-operator-selected-light);
+    --ui-focus: var(--color-operator-amber-light);
+    --ui-success: var(--color-operator-success-light);
+    --ui-warning: var(--color-operator-warning-light);
+    --ui-danger: var(--color-operator-danger-light);
+    --ui-syntax-a: var(--color-operator-amber-light);
+    --ui-syntax-b: var(--color-operator-syntax-b-light);
+    --ui-paper-border: var(--color-operator-border-light);
+    --ui-paper-shadow: none;
+    --ui-overlay: var(--color-overlay-light);
+    --ui-modal-shadow: var(--shadow-modal-light);
+    --ui-font-chrome: var(--font-mono);
+    --ui-font-source: var(--font-mono);
+    --ui-font-render: var(--font-sans);
+    --ui-radius-control: var(--primitive-radius-xs);
+    --ui-radius-surface: var(--primitive-radius-square);
+  }
+}

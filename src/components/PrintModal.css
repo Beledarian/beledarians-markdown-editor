@@ -1,0 +1,87 @@
+.workspace-shell button.icon-close-btn {
+    display: inline-flex;
+    width: calc(var(--ui-space-12) + var(--ui-space-12));
+    min-width: calc(var(--ui-space-12) + var(--ui-space-12));
+    min-height: calc(var(--ui-space-12) + var(--ui-space-12));
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    color: var(--ui-text);
+    border: var(--ui-hairline) solid transparent;
+    border-radius: var(--ui-radius-control);
+}
+
+.workspace-shell button.icon-close-btn:hover {
+    background: var(--ui-bg-raised);
+    color: var(--ui-text);
+    border-color: var(--ui-border);
+}
+
+.workspace-shell .print-modal {
+    display: flex;
+    width: min(400px, calc(100vw - var(--ui-space-8) - var(--ui-space-8)));
+    max-width: none;
+    max-height: var(--ui-modal-block-size);
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+}
+
+.workspace-shell .print-modal .modal-header {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: var(--ui-space-8);
+}
+
+.workspace-shell .print-modal .print-options {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ui-space-12);
+    padding: var(--ui-space-8);
+    overflow-y: auto;
+}
+
+.workspace-shell .print-modal .option-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-5);
+}
+
+.workspace-shell .print-modal .option-group h3 {
+    margin: 0;
+    padding-bottom: var(--ui-space-3);
+    color: var(--ui-text-muted);
+    border-bottom: var(--ui-hairline) solid var(--ui-border);
+    font-size: var(--ui-font-size-sm);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.workspace-shell .print-modal .print-option {
+    display: flex;
+    min-height: var(--ui-control-height);
+    align-items: center;
+    gap: var(--ui-space-5);
+    padding: var(--ui-space-4);
+    border-radius: var(--ui-radius-control);
+    cursor: pointer;
+}
+
+.workspace-shell .print-modal .print-option:hover {
+    background-color: var(--ui-bg-raised);
+}
+
+.workspace-shell .print-modal .print-option input {
+    cursor: pointer;
+}
+
+.workspace-shell .print-modal .modal-footer {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: var(--ui-space-8);
+    border-top: var(--ui-hairline) solid var(--ui-border);
+}

@@ -1,0 +1,221 @@
+@layer components {
+  .settings-modal-overlay {
+    background: color-mix(in srgb, var(--ui-shell-bg) 38%, transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-content.settings-modal {
+    display: flex;
+    width: min(760px, calc(100vw - var(--ui-space-xl) - var(--ui-space-xl)));
+    max-width: none;
+    max-height: min(90vh, 900px);
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    background: var(--ui-surface-bg);
+    color: var(--ui-text-color);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-border-radius);
+    box-shadow: var(--ui-shadow-paper);
+  }
+
+  .settings-modal .settings-modal-header {
+    gap: var(--ui-space-lg);
+    margin: 0;
+    padding: var(--ui-space-lg) var(--ui-space-xl);
+    border-bottom: 1px solid var(--ui-border-color);
+  }
+
+  .settings-modal .settings-modal-header > div {
+    min-width: 0;
+  }
+
+  .settings-modal .settings-modal-header h2,
+  .settings-modal .settings-modal-header p {
+    margin: 0;
+  }
+
+  .settings-modal .settings-modal-header p {
+    margin-top: var(--ui-space-xs);
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-sm);
+  }
+
+  .settings-modal .settings-modal-header .close-btn {
+    display: inline-flex;
+    width: max(44px, calc(var(--ui-space-12) + var(--ui-space-12)));
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--ui-border-color);
+    color: var(--ui-text-color);
+  }
+
+  .settings-modal .settings-modal-header .close-btn:hover {
+    background: var(--ui-surface-hover);
+    color: var(--ui-text-color);
+    border-color: var(--ui-accent-color);
+  }
+
+  .settings-modal .settings-modal-body {
+    min-height: 0;
+    padding: 0 var(--ui-space-xl);
+    overflow-y: auto;
+  }
+
+  .settings-section {
+    padding: var(--ui-space-xl) 0;
+    border-bottom: 1px solid var(--ui-border-color);
+  }
+
+  .settings-section:last-child {
+    border-bottom: 0;
+  }
+
+  .settings-section > h3 {
+    margin: 0 0 var(--ui-space-lg);
+    color: var(--ui-text-color);
+    font-size: var(--ui-font-size-lg);
+  }
+
+  .settings-section .appearance-selector {
+    margin-bottom: var(--ui-space-xl);
+  }
+
+  .settings-control {
+    display: grid;
+    gap: var(--ui-space-sm);
+    margin-top: var(--ui-space-lg);
+  }
+
+  .settings-control label {
+    color: var(--ui-text-color);
+    font-size: var(--ui-font-size-sm);
+    font-weight: 600;
+  }
+
+  .settings-control label span {
+    color: var(--ui-text-muted);
+    font-weight: 400;
+  }
+
+  .settings-control select,
+  .settings-control input[type="number"],
+  .shortcut-input {
+    min-height: 36px;
+    padding: var(--ui-space-sm) var(--ui-space-md);
+    background: var(--ui-paper-bg);
+    color: var(--ui-text-color);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-border-radius);
+    font: inherit;
+  }
+
+  .settings-control select:focus-visible,
+  .settings-control input:focus-visible,
+  .shortcut-input:focus-visible {
+    outline: 2px solid var(--ui-accent-color);
+    outline-offset: 2px;
+    border-color: var(--ui-accent-color);
+  }
+
+  .settings-code-preview {
+    max-height: 132px;
+    overflow: hidden;
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-border-radius);
+  }
+
+  .settings-code-preview pre,
+  .settings-code-preview code {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .settings-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--ui-accent-color);
+  }
+
+  .settings-control--inline {
+    grid-template-columns: minmax(0, 1fr) 92px;
+    align-items: center;
+  }
+
+  .settings-modal .shortcut-list {
+    display: grid;
+    gap: var(--ui-space-sm);
+  }
+
+  .settings-modal .shortcut-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(140px, 190px);
+    gap: var(--ui-space-md);
+    align-items: center;
+  }
+
+  .settings-modal .shortcut-item label {
+    min-width: 0;
+    color: var(--ui-text-color);
+    font-size: var(--ui-font-size-sm);
+  }
+
+  .settings-modal .shortcut-input {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .settings-modal .settings-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-space-lg);
+    margin: 0;
+    padding: var(--ui-space-md) var(--ui-space-xl);
+    background: var(--ui-surface-bg);
+    border-top: 1px solid var(--ui-border-color);
+    text-align: initial;
+  }
+
+  .settings-modal .settings-modal-footer .hint {
+    margin: 0;
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-xs);
+  }
+
+  .settings-modal .settings-modal-footer .primary-btn {
+    min-height: 34px;
+    padding: var(--ui-space-sm) var(--ui-space-lg);
+    background: var(--ui-accent-color);
+    color: var(--ui-paper-bg);
+    border: 1px solid var(--ui-accent-color);
+    border-radius: var(--ui-border-radius);
+  }
+
+  @media (max-width: 720px) {
+    .modal-content.settings-modal {
+      width: calc(100vw - var(--ui-space-md) - var(--ui-space-md));
+      max-height: calc(100vh - var(--ui-space-md) - var(--ui-space-md));
+    }
+
+    .settings-modal .settings-modal-header,
+    .settings-modal .settings-modal-body,
+    .settings-modal .settings-modal-footer {
+      padding-right: var(--ui-space-md);
+      padding-left: var(--ui-space-md);
+    }
+
+    .settings-modal .shortcut-item {
+      grid-template-columns: 1fr;
+      gap: var(--ui-space-xs);
+    }
+
+    .settings-modal .settings-modal-footer {
+      align-items: flex-end;
+    }
+  }
+}

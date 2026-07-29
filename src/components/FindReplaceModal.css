@@ -1,0 +1,94 @@
+.find-replace-modal {
+  position: absolute;
+  top: calc(var(--ui-command-height) + var(--ui-space-4));
+  right: var(--ui-space-8);
+  width: min(300px, calc(100vw - var(--ui-space-8) - var(--ui-space-8)));
+  padding: var(--ui-space-8);
+  z-index: var(--ui-z-overlay);
+  background-color: var(--ui-bg-panel);
+  color: var(--ui-text);
+  border: var(--ui-hairline) solid var(--ui-border);
+  border-radius: var(--ui-radius-control);
+  box-shadow: var(--ui-modal-shadow);
+  box-sizing: border-box;
+}
+
+.workspace-shell .find-replace-content {
+  width: auto;
+  max-height: none;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.find-replace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--ui-space-4);
+  margin-bottom: var(--ui-space-5);
+}
+
+.find-replace-header h3 {
+  margin: 0;
+  font-size: var(--ui-font-size-body);
+}
+
+.find-replace-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-5);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-3);
+}
+
+.input-group label {
+  color: var(--ui-text-muted);
+  font-size: var(--ui-font-size-sm);
+}
+
+.input-group input {
+  min-height: var(--ui-control-height);
+  padding: 0 var(--ui-space-4);
+  background-color: var(--ui-bg-input);
+  color: var(--ui-text);
+  border: var(--ui-hairline) solid var(--ui-border-input);
+  border-radius: var(--ui-radius-control);
+  font: inherit;
+}
+
+.input-group input:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.find-replace-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--ui-space-4);
+  margin-top: var(--ui-space-8);
+}
+
+.find-replace-footer button {
+  font-size: var(--ui-font-size-sm);
+}
+
+.options-group {
+  display: flex;
+  gap: var(--ui-space-6);
+  margin-top: var(--ui-space-3);
+  font-size: var(--ui-font-size-sm);
+}
+
+.options-group label {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-2);
+}

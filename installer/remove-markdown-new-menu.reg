@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+; Remove the ShellNew entry (removes from "New" menu)
+[-HKEY_CLASSES_ROOT\.md\ShellNew]

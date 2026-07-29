@@ -1,0 +1,64 @@
+@layer components {
+  .workspace-shell .status-region {
+    min-width: 0;
+    min-height: 0;
+    border-top: var(--ui-hairline) solid var(--ui-border);
+    background: var(--ui-bg-status);
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font-source);
+    font-size: var(--ui-font-size-xs);
+    overflow: hidden;
+  }
+
+  .workspace-shell .status-region > .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    padding: 0 var(--ui-space-5);
+    gap: var(--ui-space-6);
+    border: 0;
+    background: transparent;
+    color: inherit;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .workspace-shell .status-item {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .workspace-shell .status-item:last-child {
+    margin-left: auto;
+  }
+
+  .workspace-shell :is(.save-state, .integration-status)[data-state='saved'],
+  .workspace-shell :is(.save-state, .integration-status)[data-state='available'] {
+    color: var(--ui-success);
+  }
+
+  .workspace-shell :is(.save-state, .integration-status)[data-state='saving'],
+  .workspace-shell :is(.save-state, .integration-status)[data-state='busy'] {
+    color: var(--ui-warning);
+  }
+
+  .workspace-shell :is(.save-state, .integration-status)[data-state='failed'],
+  .workspace-shell :is(.save-state, .integration-status)[data-state='conflict'],
+  .workspace-shell :is(.save-state, .integration-status)[data-state='unavailable'],
+  .workspace-shell :is(.save-state, .integration-status)[data-state='protocol-mismatch'] {
+    color: var(--ui-danger);
+  }
+
+  .workspace-shell[data-style='reading'] .status-region {
+    font-family: var(--ui-font-chrome);
+  }
+
+  .workspace-shell[data-style='operator'] .status-region {
+    letter-spacing: 0.02em;
+  }
+}

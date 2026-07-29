@@ -1,0 +1,112 @@
+@layer components {
+  .web-download-dock {
+    position: fixed;
+    right: var(--ui-space-4, 10px);
+    bottom: calc(var(--ui-status-height, 28px) + var(--ui-space-4, 10px));
+    z-index: 900;
+    display: flex;
+    align-items: stretch;
+    max-width: calc(100vw - 24px);
+    overflow: hidden;
+    border: var(--ui-hairline, 1px) solid var(--ui-border);
+    border-radius: var(--ui-radius-control, 3px);
+    background: color-mix(in srgb, var(--ui-bg-raised) 94%, transparent);
+    box-shadow: var(--ui-modal-shadow);
+    color: var(--ui-text);
+    backdrop-filter: blur(10px);
+    transition:
+      border-color var(--ui-motion-fast) var(--ui-motion-ease),
+      transform var(--ui-motion-fast) var(--ui-motion-ease);
+  }
+
+  .web-download-dock:hover,
+  .web-download-dock:focus-within {
+    border-color: var(--ui-action);
+    transform: translateY(-2px);
+  }
+
+  .web-download-link {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--ui-space-3, 8px);
+    padding: var(--ui-space-3, 8px) var(--ui-space-4, 10px);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .web-download-link > svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: var(--ui-action);
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    stroke-width: 1.7;
+  }
+
+  .web-download-link > span {
+    display: grid;
+    min-width: 0;
+    gap: 1px;
+  }
+
+  .web-download-link strong {
+    color: var(--ui-text);
+    font-family: var(--ui-font-chrome);
+    font-size: var(--ui-font-size-sm, 11px);
+    font-weight: var(--ui-font-weight-selected, 600);
+    line-height: 1.25;
+  }
+
+  .web-download-link small {
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font-source);
+    font-size: var(--ui-font-size-xs, 10px);
+    line-height: 1.25;
+  }
+
+  .web-download-dismiss {
+    display: grid;
+    width: 30px;
+    min-width: 30px;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-left: var(--ui-hairline, 1px) solid var(--ui-border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ui-text-muted);
+  }
+
+  .web-download-dismiss:hover {
+    background: var(--ui-bg-panel);
+    color: var(--ui-text);
+  }
+
+  .web-download-dismiss svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+  }
+
+  @media (max-width: 520px) {
+    .web-download-dock {
+      right: var(--ui-space-3, 8px);
+      bottom: calc(var(--ui-status-height, 28px) + var(--ui-space-3, 8px));
+    }
+
+    .web-download-link small {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .web-download-dock {
+      transition: none;
+    }
+  }
+}

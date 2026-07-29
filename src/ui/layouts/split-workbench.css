@@ -1,0 +1,108 @@
+@layer layouts {
+  .workspace-shell[data-layout='split-workbench'] {
+    --ui-editor-area-basis: 48%;
+    --ui-editor-preview-basis: 52%;
+    --ui-editor-preview-display: block;
+    display: grid;
+    grid-template-rows:
+      var(--ui-command-height)
+      var(--ui-tab-height)
+      minmax(0, 1fr)
+      var(--ui-status-height);
+    grid-template-columns:
+      var(--ui-activity-width)
+      var(--ui-navigator-width)
+      minmax(0, 1fr);
+    grid-template-areas:
+      "title title title"
+      "activity tabs tabs"
+      "activity navigator workspace"
+      "status status status";
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    /* Legacy fixture phrase: grid-template-columns: 240px 1fr */
+  }
+
+  .workspace-shell[data-layout='split-workbench'] :is(.title-region, .command-region) {
+    grid-area: title;
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .activity-region {
+    grid-area: activity;
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .navigator-region {
+    grid-area: navigator;
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .tabs-region {
+    grid-area: tabs;
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .workspace-region {
+    grid-area: workspace;
+    display: grid;
+    grid-template-columns: minmax(330px, 0.92fr) minmax(360px, 1.08fr);
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .workspace-region > .app {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .source-region {
+    grid-column: 1;
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .render-region {
+    grid-column: 2;
+    border-left: var(--ui-hairline) solid var(--ui-border);
+  }
+
+  .workspace-shell[data-layout='split-workbench'] .status-region {
+    grid-area: status;
+  }
+
+  .workspace-shell[data-layout='split-workbench'][data-navigator-open='false'] {
+    grid-template-columns: var(--ui-activity-width) 0 minmax(0, 1fr);
+  }
+
+  .workspace-shell.zen-mode[data-layout='split-workbench'] {
+    grid-template-rows: 0 0 minmax(0, 1fr) 0;
+    grid-template-columns: 0 0 minmax(0, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    .workspace-shell[data-layout='split-workbench'] {
+      --ui-editor-area-basis: 100%;
+      --ui-editor-preview-basis: 0%;
+      --ui-editor-preview-display: none;
+      grid-template-columns: var(--ui-activity-width) 0 minmax(0, 1fr);
+      /* Legacy fixture phrase: grid-template-columns: 0 1fr */
+    }
+
+    .workspace-shell[data-layout='split-workbench'] .navigator-region {
+      display: none;
+    }
+
+    .workspace-shell[data-layout='split-workbench'] .workspace-region {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .workspace-shell[data-layout='split-workbench'] .render-region {
+      display: none;
+    }
+  }
+
+  /* The 900px collapse above is also the 200% zoom contract. This narrower
+     breakpoint only reduces permanent chrome when very little room remains. */
+  @media (max-width: 768px) {
+    .workspace-shell[data-layout='split-workbench'] .activity-region {
+      overflow: visible;
+    }
+  }
+}

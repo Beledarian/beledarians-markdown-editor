@@ -1,0 +1,41 @@
+@layer themes {
+  .workspace-shell[data-theme='reading-dark'],
+  .workspace-shell[data-style='reading'][data-color-mode='dark'] {
+    color-scheme: dark;
+    --ui-bg-shell: var(--color-reading-shell-dark);
+    --ui-bg-panel: var(--color-reading-rail-dark);
+    --ui-bg-raised: var(--color-reading-selected-dark);
+    --ui-bg-chrome: var(--color-reading-paper-dark);
+    --ui-bg-editor: var(--color-reading-marginalia-dark);
+    --ui-bg-render: var(--color-reading-paper-dark);
+    --ui-bg-status: var(--color-reading-status-dark);
+    --ui-bg-input: var(--color-reading-paper-dark);
+    --ui-bg-code: var(--color-reading-marginalia-dark);
+    --ui-bg-marginalia: var(--color-reading-marginalia-dark);
+    --ui-text: var(--color-reading-ink-dark);
+    --ui-text-muted: var(--color-reading-muted-dark);
+    --ui-text-subtle: var(--color-reading-shelf-text-dark);
+    --ui-text-body: var(--color-reading-body-dark);
+    --ui-text-on-action: var(--color-reading-shell-dark);
+    --ui-border: var(--color-reading-rule-dark);
+    --ui-border-input: var(--color-reading-rule-dark);
+    --ui-action: var(--color-reading-evergreen-dark);
+    --ui-action-text: var(--color-reading-evergreen-dark);
+    --ui-selection: var(--color-reading-selected-dark);
+    --ui-focus: var(--color-reading-evergreen-dark);
+    --ui-success: var(--color-reading-success-dark);
+    --ui-warning: var(--color-reading-warning-dark);
+    --ui-danger: var(--color-reading-danger-dark);
+    --ui-syntax-a: var(--color-reading-syntax-a-dark);
+    --ui-syntax-b: var(--color-reading-syntax-b-dark);
+    --ui-paper-border: var(--color-reading-page-border-dark);
+    --ui-paper-shadow: var(--shadow-reading-paper-dark);
+    --ui-overlay: var(--color-reading-overlay-dark);
+    --ui-modal-shadow: var(--shadow-reading-modal-dark);
+    --ui-font-chrome: var(--font-sans);
+    --ui-font-source: var(--font-mono);
+    --ui-font-render: var(--font-serif);
+    --ui-radius-control: var(--primitive-radius-md);
+    --ui-radius-surface: var(--primitive-radius-square);
+  }
+}

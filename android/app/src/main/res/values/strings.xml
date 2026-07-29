@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Beledarians Markdown Editor</string>
+    <string name="title_activity_main">Beledarians Markdown Editor</string>
+    <string name="package_name">io.github.beledarian.markdowneditor</string>
+    <string name="custom_url_scheme">io.github.beledarian.markdowneditor</string>
+</resources>

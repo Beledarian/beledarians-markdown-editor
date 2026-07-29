@@ -1,0 +1,116 @@
+@layer reset, primitives, semantics, themes, base, components, layouts, adapters, utilities;
+
+@import './tokens/primitives.css';
+@import './tokens/semantics.css';
+@import './tokens/density.css';
+
+@import './themes/workbench-light.css';
+@import './themes/workbench-dark.css';
+@import './themes/reading-light.css';
+@import './themes/reading-dark.css';
+@import './themes/operator-light.css';
+@import './themes/operator-dark.css';
+
+@import './components/button.css';
+@import './components/tabs.css';
+@import './components/navigator.css';
+@import './components/panes.css';
+@import './components/status.css';
+@import './components/overlays.css';
+
+@import './layouts/split-workbench.css';
+@import './layouts/focus-canvas.css';
+@import './layouts/command-proof.css';
+
+@import './adapters/uiw-editor.css';
+
+@layer base {
+  .workspace-shell,
+  .workspace-shell *,
+  .workspace-shell *::before,
+  .workspace-shell *::after {
+    box-sizing: border-box;
+  }
+
+  .workspace-shell {
+    width: 100%;
+    max-width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--ui-text);
+    background: var(--ui-bg-shell);
+    font-family: var(--ui-font-chrome);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  .workspace-shell,
+  .workspace-shell * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ui-scrollbar-thumb) var(--ui-scrollbar-track);
+  }
+
+  .workspace-shell::-webkit-scrollbar,
+  .workspace-shell *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .workspace-shell::-webkit-scrollbar-track,
+  .workspace-shell *::-webkit-scrollbar-track {
+    background: var(--ui-scrollbar-track);
+  }
+
+  .workspace-shell::-webkit-scrollbar-thumb,
+  .workspace-shell *::-webkit-scrollbar-thumb {
+    border: 2px solid var(--ui-scrollbar-track);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-scrollbar-thumb);
+    background-clip: padding-box;
+  }
+
+  .workspace-shell::-webkit-scrollbar-thumb:hover,
+  .workspace-shell *::-webkit-scrollbar-thumb:hover {
+    background: var(--ui-scrollbar-thumb-hover);
+    background-clip: padding-box;
+  }
+
+  .workspace-shell::-webkit-scrollbar-thumb:active,
+  .workspace-shell *::-webkit-scrollbar-thumb:active {
+    background: var(--ui-scrollbar-thumb-active);
+    background-clip: padding-box;
+  }
+
+  .workspace-shell::-webkit-scrollbar-corner,
+  .workspace-shell *::-webkit-scrollbar-corner {
+    background: var(--ui-scrollbar-corner);
+  }
+
+  .workspace-shell ::selection {
+    background: var(--ui-selection);
+    color: var(--ui-text);
+  }
+
+  .workspace-shell :is(input, select, textarea):focus-visible {
+    outline: var(--ui-focus-ring-width) solid var(--ui-focus);
+    outline-offset: var(--ui-focus-ring-offset);
+  }
+
+  .workspace-shell a {
+    color: var(--ui-action);
+  }
+}
+
+@layer utilities {
+  @media (prefers-reduced-motion: reduce) {
+    .workspace-shell,
+    .workspace-shell *,
+    .workspace-shell *::before,
+    .workspace-shell *::after {
+      scroll-behavior: auto;
+      animation-duration: 0ms;
+      transition-duration: 0ms;
+    }
+  }
+}

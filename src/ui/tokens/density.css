@@ -1,0 +1,110 @@
+@layer semantics {
+  .workspace-shell[data-density='compact'] {
+    --ui-space-1: 2px;
+    --ui-space-2: 4px;
+    --ui-space-3: 6px;
+    --ui-space-4: 8px;
+    --ui-space-5: 10px;
+    --ui-space-6: 12px;
+    --ui-space-8: 16px;
+    --ui-space-12: 24px;
+    --ui-space-page: clamp(24px, 4vw, 58px);
+    --ui-font-size-xs: 10px;
+    --ui-font-size-sm: 11px;
+    --ui-font-size-md: 12px;
+    --ui-font-size-body: 13px;
+    --ui-font-size-lg: 15px;
+    --ui-font-size-title: 27px;
+    --ui-line-body: 1.55;
+    --ui-line-source: 1.75;
+    --ui-command-height: 38px;
+    --ui-tab-height: 34px;
+    --ui-pane-heading-height: 34px;
+    --ui-status-height: 24px;
+    --ui-control-height: 28px;
+    --ui-row-height: 29px;
+    --ui-activity-width: 42px;
+    --ui-navigator-width: 238px;
+    --ui-outline-width: 0px;
+    --ui-tab-max-width: 200px;
+    --ui-page-max-width: 820px;
+    --ui-hit-target: 28px;
+    --ui-font-weight-selected: 600;
+  }
+
+  .workspace-shell[data-density='comfortable'] {
+    --ui-space-1: 2px;
+    --ui-space-2: 4px;
+    --ui-space-3: 8px;
+    --ui-space-4: 10px;
+    --ui-space-5: 12px;
+    --ui-space-6: 15px;
+    --ui-space-8: 18px;
+    --ui-space-12: 24px;
+    --ui-space-page: clamp(32px, 6vw, 78px);
+    --ui-font-size-xs: 10px;
+    --ui-font-size-sm: 11px;
+    --ui-font-size-md: 12px;
+    --ui-font-size-body: 16px;
+    --ui-font-size-lg: 18px;
+    --ui-font-size-title: clamp(29px, 3.3vw, 44px);
+    --ui-line-body: 1.72;
+    --ui-line-source: 1.65;
+    --ui-command-height: 50px;
+    --ui-tab-height: 0px;
+    --ui-pane-heading-height: 34px;
+    --ui-status-height: 28px;
+    --ui-control-height: 30px;
+    --ui-row-height: 46px;
+    --ui-activity-width: 0px;
+    --ui-navigator-width: 214px;
+    --ui-outline-width: 190px;
+    --ui-tab-max-width: 200px;
+    --ui-page-max-width: 820px;
+    --ui-hit-target: 30px;
+    --ui-font-weight-selected: 650;
+  }
+
+  .workspace-shell[data-density='dense'] {
+    --ui-space-1: 1px;
+    --ui-space-2: 2px;
+    --ui-space-3: 4px;
+    --ui-space-4: 7px;
+    --ui-space-5: 8px;
+    --ui-space-6: 9px;
+    --ui-space-8: 10px;
+    --ui-space-12: 13px;
+    --ui-space-page: clamp(20px, 3vw, 44px);
+    --ui-font-size-xs: 9px;
+    --ui-font-size-sm: 10px;
+    --ui-font-size-md: 11px;
+    --ui-font-size-body: 13px;
+    --ui-font-size-lg: 14px;
+    --ui-font-size-title: 24px;
+    --ui-line-body: 1.6;
+    --ui-line-source: 1.8;
+    --ui-command-height: 46px;
+    --ui-tab-height: 34px;
+    --ui-pane-heading-height: 34px;
+    --ui-status-height: 26px;
+    --ui-control-height: 28px;
+    --ui-row-height: 28px;
+    --ui-activity-width: 0px;
+    --ui-navigator-width: 205px;
+    --ui-outline-width: 330px;
+    --ui-tab-max-width: 200px;
+    --ui-page-max-width: none;
+    --ui-hit-target: 28px;
+    --ui-font-weight-selected: 600;
+  }
+
+  .workspace-shell {
+    /* Previous token names remain aliases until all permanent chrome is migrated. */
+    --ui-space-xs: var(--ui-space-1);
+    --ui-space-sm: var(--ui-space-2);
+    --ui-space-md: var(--ui-space-4);
+    --ui-space-lg: var(--ui-space-6);
+    --ui-space-xl: var(--ui-space-8);
+    --ui-header-height: var(--ui-command-height);
+  }
+}

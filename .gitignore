@@ -1,0 +1,55 @@
+# Logs
+build_log.txt
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules/
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+**/target/*
+src-tauri/target-final/
+*.exe
+*.bat
+*.asar
+**/release/*
+**/debug/*
+vscode-extension/out/*
+
+# Agent and assistant session data
+.agent-tools/
+.agents/
+.gemini/
+.claude/
+
+# Local Brain (Chat Logs & Artifacts)
+.brain/
+
+# Secrets
+.env*
+*.pem
+*.key
+oauth_creds.json
+**/creds.json
+**/secrets.json
+
+# Release artifacts belong on GitHub Releases, not in source history
+artifacts_macOS/
+*.dmg
+*.vsix

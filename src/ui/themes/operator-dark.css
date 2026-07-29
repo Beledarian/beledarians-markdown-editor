@@ -1,0 +1,41 @@
+@layer themes {
+  .workspace-shell[data-theme='operator-dark'],
+  .workspace-shell[data-style='operator'][data-color-mode='dark'] {
+    color-scheme: dark;
+    --ui-bg-shell: var(--color-operator-base-dark);
+    --ui-bg-panel: var(--color-operator-panel-dark);
+    --ui-bg-raised: var(--color-operator-active-dark);
+    --ui-bg-chrome: var(--color-operator-command-dark);
+    --ui-bg-editor: var(--color-operator-panel-dark);
+    --ui-bg-render: var(--color-operator-proof-dark);
+    --ui-bg-status: var(--color-operator-command-dark);
+    --ui-bg-input: var(--color-operator-input-dark);
+    --ui-bg-code: var(--color-operator-panel-dark);
+    --ui-bg-marginalia: var(--color-operator-focus-dark);
+    --ui-text: var(--color-operator-ink-dark);
+    --ui-text-muted: var(--color-operator-muted-dark);
+    --ui-text-subtle: var(--color-operator-subtle-dark);
+    --ui-text-body: var(--color-operator-body-dark);
+    --ui-text-on-action: var(--color-operator-base-dark);
+    --ui-border: var(--color-operator-border-dark);
+    --ui-border-input: var(--color-operator-input-border-dark);
+    --ui-action: var(--color-operator-amber-dark);
+    --ui-action-text: var(--color-operator-amber-text-dark);
+    --ui-selection: var(--color-operator-selected-dark);
+    --ui-focus: var(--color-operator-amber-dark);
+    --ui-success: var(--color-operator-success-dark);
+    --ui-warning: var(--color-operator-warning-dark);
+    --ui-danger: var(--color-operator-danger-dark);
+    --ui-syntax-a: var(--color-operator-amber-dark);
+    --ui-syntax-b: var(--color-operator-syntax-b-dark);
+    --ui-paper-border: var(--color-operator-border-dark);
+    --ui-paper-shadow: none;
+    --ui-overlay: var(--color-overlay-dark);
+    --ui-modal-shadow: var(--shadow-modal-dark);
+    --ui-font-chrome: var(--font-mono);
+    --ui-font-source: var(--font-mono);
+    --ui-font-render: var(--font-sans);
+    --ui-radius-control: var(--primitive-radius-xs);
+    --ui-radius-surface: var(--primitive-radius-square);
+  }
+}
