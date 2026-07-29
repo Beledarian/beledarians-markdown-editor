@@ -88,6 +88,16 @@ const collectDomMatchRanges = (root, query, matchCase, isRegex) => {
     .map((match) => ({
       ...match,
       range: createDomRange(nodes, match.index, match.index + match.length),
+      segments: nodes
+        .filter((entry) => (
+          entry.start < match.index + match.length
+          && entry.end > match.index
+        ))
+        .map((entry) => ({
+          node: entry.node,
+          start: Math.max(0, match.index - entry.start),
+          end: Math.min(entry.node.length, match.index + match.length - entry.start),
+        })),
     }))
     .filter((match) => match.range);
 };
@@ -118,30 +128,8 @@ const applyFindHighlights = (allRanges, currentRanges = []) => {
   return true;
 };
 
-const wrapRangeSegments = (range, isCurrent) => {
-  const root = range.commonAncestorContainer.nodeType === 3
-    ? range.commonAncestorContainer.parentElement
-    : range.commonAncestorContainer;
-  if (!root) return;
-
-  const walker = document.createTreeWalker(
-    root,
-    globalThis.NodeFilter?.SHOW_TEXT ?? 4,
-  );
-  const nodes = [];
-  if (range.commonAncestorContainer.nodeType === 3) {
-    nodes.push(range.commonAncestorContainer);
-  } else {
-    let node = walker.nextNode();
-    while (node) {
-      if (range.intersectsNode(node)) nodes.push(node);
-      node = walker.nextNode();
-    }
-  }
-
-  nodes.reverse().forEach((textNode) => {
-    const start = textNode === range.startContainer ? range.startOffset : 0;
-    const end = textNode === range.endContainer ? range.endOffset : textNode.length;
+const wrapTextSegments = (segments, isCurrent) => {
+  segments.slice().reverse().forEach(({ node: textNode, start, end }) => {
     if (end <= start) return;
 
     let selectedNode = textNode;
@@ -166,7 +154,7 @@ const applyFallbackHighlights = (domMatches, currentIndex) => {
     matches
       .map((match, index) => ({ ...match, index }))
       .reverse()
-      .forEach((match) => wrapRangeSegments(match.range, match.index === activeIndex));
+      .forEach((match) => wrapTextSegments(match.segments, match.index === activeIndex));
   });
 };
 
