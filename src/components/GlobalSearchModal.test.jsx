@@ -3,6 +3,11 @@ import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import GlobalSearchModal from './GlobalSearchModal';
 
+const invokeMock = vi.fn();
+vi.mock('@tauri-apps/api/core', () => ({
+  invoke: (...args) => invokeMock(...args),
+}));
+
 const SearchHarness = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -78,5 +83,34 @@ describe('GlobalSearchModal keyboard lifecycle', () => {
     });
 
     expect(screen.getByRole('button', { name: /guide\.md line 1/i })).toBeInTheDocument();
+  });
+
+  it('searches every occurrence in native Tauri files without browser handles', async () => {
+    vi.useFakeTimers();
+    invokeMock.mockResolvedValue('needle once\nand needle twice');
+    render(
+      <GlobalSearchModal
+        isOpen
+        onClose={vi.fn()}
+        files={[{ name: 'native.md', path: 'C:\\notes\\native.md', handle: null }]}
+        onFileSelect={vi.fn()}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(0);
+    });
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search all files' }), {
+      target: { value: 'needle' },
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300);
+    });
+
+    expect(invokeMock).toHaveBeenCalledWith('read_file', {
+      path: 'C:\\notes\\native.md',
+    });
+    expect(screen.getAllByRole('button', { name: /native\.md line/i })).toHaveLength(2);
   });
 });

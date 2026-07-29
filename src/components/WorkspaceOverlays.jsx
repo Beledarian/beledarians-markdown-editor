@@ -35,6 +35,7 @@ export function WorkspaceOverlays({
   setShowFindReplace,
   markdown,
   handleFind,
+  handleHighlightFind,
   handleReplace,
   handleReplaceAll,
   setMarkdown: _setMarkdown,
@@ -84,6 +85,7 @@ export function WorkspaceOverlays({
         onClose={() => setShowFindReplace(false)}
         markdown={markdown}
         onFind={handleFind}
+        onHighlight={handleHighlightFind}
         onReplace={handleReplace}
         onReplaceAll={handleReplaceAll}
       />

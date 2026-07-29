@@ -12,6 +12,18 @@ const GlobalSearchModal = ({ isOpen, onClose, files, onFileSelect, onNavigate })
     // Monotonic counter — each new search increments it; stale searches bail out
     const searchIdRef = useRef(0);
 
+    const readFileText = useCallback(async (file) => {
+        if (file.handle) {
+            const fileObj = await file.handle.getFile();
+            return fileObj.text();
+        }
+        if (file.path) {
+            const { invoke } = await import('@tauri-apps/api/core');
+            return invoke('read_file', { path: file.path });
+        }
+        return null;
+    }, []);
+
     const closeDialog = useEffectEvent(() => onClose());
 
     // Reset, focus, trap keyboard navigation, and restore the invoking control.
@@ -84,12 +96,13 @@ const GlobalSearchModal = ({ isOpen, onClose, files, onFileSelect, onNavigate })
             try {
                 for (const file of files) {
                     if (searchId !== searchIdRef.current) return; // newer search started
-                    if (!file.handle) continue;
                     try {
-                        const fileObj = await file.handle.getFile();
-                        const text = await fileObj.text();
-                        if (text.toLowerCase().includes(query.toLowerCase())) {
-                            const index = text.toLowerCase().indexOf(query.toLowerCase());
+                        const text = await readFileText(file);
+                        if (typeof text !== 'string') continue;
+                        const normalizedText = text.toLocaleLowerCase();
+                        const normalizedQuery = query.toLocaleLowerCase();
+                        let index = normalizedText.indexOf(normalizedQuery);
+                        while (index !== -1) {
                             const start = Math.max(0, index - 40);
                             const end = Math.min(text.length, index + query.length + 40);
                             let snippet = text.substring(start, end);
@@ -104,8 +117,10 @@ const GlobalSearchModal = ({ isOpen, onClose, files, onFileSelect, onNavigate })
                                 handle: file.handle,
                                 snippet,
                                 matchLine: lineNum,
-                                matchText: text.substring(index, index + query.length)
+                                matchText: text.substring(index, index + query.length),
+                                matchIndex: index,
                             });
+                            index = normalizedText.indexOf(normalizedQuery, index + normalizedQuery.length);
                         }
                     } catch {
                         // Skip files with stale/revoked handles
@@ -123,26 +138,23 @@ const GlobalSearchModal = ({ isOpen, onClose, files, onFileSelect, onNavigate })
         }, delay);
 
         return () => clearTimeout(timer);
-    }, [query, files]);
+    }, [query, files, readFileText]);
 
     // Handle result click: open file then navigate to the match
-    const handleResultClick = useCallback((res) => {
+    const handleResultClick = useCallback(async (res) => {
         const capturedLine = res.matchLine;
 
-        onFileSelect(res);
+        await onFileSelect(res);
         onClose();
 
-        // Navigate after a delay to allow the file to load and the editor to render.
-        // We try at 400 ms (covers already-open files / fast loads) and retry at
-        // 1200 ms to cover slower async reads from disk.
+        // Wait for the selected document and its rendered view to commit.
         const navigate = () => {
             if (!onNavigate) return;
             if (capturedLine) {
                 onNavigate({ line: capturedLine });
             }
         };
-        setTimeout(navigate, 400);
-        setTimeout(navigate, 1200);
+        requestAnimationFrame(() => requestAnimationFrame(navigate));
     }, [onFileSelect, onClose, onNavigate]);
 
     if (!isOpen) return null;
@@ -184,7 +196,7 @@ const GlobalSearchModal = ({ isOpen, onClose, files, onFileSelect, onNavigate })
                     {results.length > 0 ? (
                         results.map((res) => (
                             <button
-                                key={res.path}
+                                key={`${res.path}:${res.matchIndex}`}
                                 type="button"
                                 className="search-result-item"
                                 onClick={() => handleResultClick(res)}

@@ -36,7 +36,9 @@ export function useOutlineAndNavigation({ markdown, debouncedMarkdown }) {
       scrollEl.scrollTop = line * lineHeight;
     }
 
-    const previewArea = typeof document !== 'undefined' ? document.querySelector('.w-md-editor-preview') : null;
+    const previewArea = typeof document !== 'undefined'
+      ? document.querySelector('.w-md-editor-preview, .w-md-editor-show-preview')
+      : null;
     if (previewArea) {
       const targetLine = line + 1;
       const elements = previewArea.querySelectorAll('[data-source-line]');
@@ -63,22 +65,24 @@ export function useOutlineAndNavigation({ markdown, debouncedMarkdown }) {
 
   const handleNavigate = useCallback(({ line, search }) => {
     const editor = typeof document !== 'undefined' ? document.querySelector('.w-md-editor-text-input') : null;
-    if (!editor) return;
     const scrollEl = getEditorScrollContainer(editor);
 
     if (line) {
-      const lines = markdown.split('\n');
-      let targetIndex = 0;
-      for (let i = 0; i < line - 1 && i < lines.length; i++) {
-        targetIndex += lines[i].length + 1;
-      }
-      editor.setSelectionRange(targetIndex, targetIndex + (lines[line - 1]?.length || 0));
-      editor.focus();
+      if (editor) {
+        const lines = markdown.split('\n');
+        let targetIndex = 0;
+        for (let i = 0; i < line - 1 && i < lines.length; i++) {
+          targetIndex += lines[i].length + 1;
+        }
+        editor.setSelectionRange(targetIndex, targetIndex + (lines[line - 1]?.length || 0));
+        editor.focus();
 
-      const lineHeight = parseInt(getComputedStyle(editor).lineHeight) || 24;
-      const targetScroll = (line - 1) * lineHeight - (scrollEl.clientHeight / 3);
-      scrollEl.scrollTo({ top: targetScroll, behavior: 'smooth' });
-    } else if (search) {
+        const lineHeight = parseInt(getComputedStyle(editor).lineHeight) || 24;
+        const targetScroll = (line - 1) * lineHeight - (scrollEl.clientHeight / 3);
+        scrollEl.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+      scrollToLine(line - 1);
+    } else if (search && editor) {
       const idx = markdown.indexOf(search);
       if (idx !== -1) {
         editor.setSelectionRange(idx, idx + search.length);
@@ -93,7 +97,7 @@ export function useOutlineAndNavigation({ markdown, debouncedMarkdown }) {
         toast.error(`Could not find "${search}" in document`);
       }
     }
-  }, [markdown]);
+  }, [markdown, scrollToLine]);
 
   return {
     headings,

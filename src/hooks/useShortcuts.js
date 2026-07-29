@@ -20,8 +20,8 @@ const DEFAULT_SHORTCUTS = {
   applyLastFormat: 'Ctrl+Shift+L', // changed to not conflict with Find & Replace
   openFormatMenu: 'Ctrl+Shift+M', // changed to not conflict with Find & Replace
   openColorMenu: 'Ctrl+Alt+C',
-  findReplace: 'Ctrl+H',
-  globalSearch: 'Ctrl+F' // Find modal toggle
+  findReplace: 'Ctrl+F',
+  globalSearch: 'Ctrl+Shift+F'
 };
 
 export const useShortcuts = (handlers) => {
@@ -33,7 +33,15 @@ export const useShortcuts = (handlers) => {
     const saved = localStorage.getItem('md-shortcuts');
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
+        let parsed = JSON.parse(saved);
+        if (parsed.findReplace === 'Ctrl+H' && parsed.globalSearch === 'Ctrl+F') {
+          parsed = {
+            ...parsed,
+            findReplace: DEFAULT_SHORTCUTS.findReplace,
+            globalSearch: DEFAULT_SHORTCUTS.globalSearch,
+          };
+          localStorage.setItem('md-shortcuts', JSON.stringify(parsed));
+        }
         // Merge defaults to ensure new keys are present (e.g. copyAll)
         // We prioritize saved values, but if a key is missing in saved, we take default.
         const merged = { ...DEFAULT_SHORTCUTS, ...parsed };

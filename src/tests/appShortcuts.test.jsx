@@ -96,19 +96,39 @@ describe('Application Keyboard Shortcuts', () => {
     }, { timeout: 3000 });
   });
 
-  it('Ctrl+F toggles Find modal', async () => {
+  it('Ctrl+F toggles Find & Replace modal', async () => {
     render(<App />);
     fireShortcut('f', { ctrlKey: true, code: 'KeyF' });
+    await waitFor(() => {
+      expect(screen.getByText('Find & Replace')).toBeInTheDocument();
+    });
+  });
+
+  it('Ctrl+Shift+F toggles Global Search', async () => {
+    render(<App />);
+    fireShortcut('f', { ctrlKey: true, shiftKey: true, code: 'KeyF' });
     await waitFor(() => {
       expect(screen.getByText('Global Search')).toBeInTheDocument();
     });
   });
 
-  it('Ctrl+H toggles Find & Replace modal', async () => {
+  it('migrates the legacy default find shortcuts without replacing custom settings', async () => {
+    localStorage.setItem('md-shortcuts', JSON.stringify({
+      findReplace: 'Ctrl+H',
+      globalSearch: 'Ctrl+F',
+      save: 'Alt+S',
+    }));
+
     render(<App />);
-    fireShortcut('h', { ctrlKey: true, code: 'KeyH' });
+    fireShortcut('f', { ctrlKey: true, code: 'KeyF' });
+
     await waitFor(() => {
       expect(screen.getByText('Find & Replace')).toBeInTheDocument();
+    });
+    expect(JSON.parse(localStorage.getItem('md-shortcuts'))).toMatchObject({
+      findReplace: 'Ctrl+F',
+      globalSearch: 'Ctrl+Shift+F',
+      save: 'Alt+S',
     });
   });
 

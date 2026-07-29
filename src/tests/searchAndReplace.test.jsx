@@ -1,7 +1,12 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+  afterEach, beforeEach, describe, expect, it, vi,
+} from 'vitest';
+import {
+  act, fireEvent, render, renderHook, screen, waitFor,
+} from '@testing-library/react';
 import React from 'react';
 import App from '../App.jsx';
+import { useSearchAndReplace } from '../hooks/useSearchAndReplace';
 
 // Mock Tauri APIs
 vi.mock('@tauri-apps/api/core', () => ({
@@ -57,6 +62,10 @@ describe('Search and Replace Logic & State Management', () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it('tests finding, replacing, regex, and case sensitivity', async () => {
     render(<App />);
 
@@ -67,8 +76,8 @@ describe('Search and Replace Logic & State Management', () => {
     // Set some initial markdown
     fireEvent.change(editor, { target: { value: 'Hello World\nhello world\nHELLO WORLD' } });
 
-    // Open Find & Replace Modal (simulate Ctrl+H)
-    fireEvent.keyDown(window, { key: 'h', code: 'KeyH', ctrlKey: true });
+    // Open Find & Replace Modal (simulate Ctrl+F)
+    fireEvent.keyDown(window, { key: 'f', code: 'KeyF', ctrlKey: true });
     
     const findInput = await screen.findByLabelText('Find:');
     const replaceInput = screen.getByLabelText('Replace:');
@@ -144,5 +153,126 @@ describe('Search and Replace Logic & State Management', () => {
     await waitFor(() => {
         expect(editor.value).toBe('hi\nhello earth\nHELLO earth');
     });
+  });
+
+  it('finds, selects, and scrolls rendered text in preview-only mode', async () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Preview' }));
+    await waitFor(() => {
+      expect(document.querySelector('.w-md-editor-text-input')).toBeNull();
+      expect(document.querySelector('.w-md-editor-show-preview')?.textContent)
+        .toContain('Hello, world!');
+    });
+
+    fireEvent.keyDown(window, {
+      key: 'f',
+      code: 'KeyF',
+      ctrlKey: true,
+    });
+
+    const findInput = await screen.findByLabelText('Find:');
+    fireEvent.change(findInput, { target: { value: 'Hello' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Find Next' }));
+
+    expect(window.getSelection().toString()).toBe('Hello');
+    expect(Element.prototype.scrollTo).toHaveBeenCalledWith(
+      expect.objectContaining({ behavior: 'smooth' }),
+    );
+  });
+
+  it('highlights every match in both the source and split preview', () => {
+    const highlightRegistry = {
+      delete: vi.fn(),
+      set: vi.fn(),
+    };
+    class TestHighlight {
+      constructor(...ranges) {
+        this.ranges = ranges;
+      }
+    }
+    vi.stubGlobal('CSS', {
+      ...(globalThis.CSS || {}),
+      highlights: highlightRegistry,
+    });
+    vi.stubGlobal('Highlight', TestHighlight);
+
+    const fixture = document.createElement('div');
+    fixture.innerHTML = `
+      <div class="w-md-editor-text-pre">Hello source</div>
+      <div class="w-md-editor-preview">
+        <div class="wmde-markdown">Hello preview</div>
+      </div>
+    `;
+    document.body.prepend(fixture);
+    const { result, unmount } = renderHook(() => (
+      useSearchAndReplace('Hello source', vi.fn())
+    ));
+
+    act(() => {
+      result.current.handleHighlightFind('Hello');
+    });
+
+    const resultsCall = highlightRegistry.set.mock.calls
+      .findLast(([name]) => name === 'md-find-results');
+    expect(resultsCall).toBeDefined();
+    expect(resultsCall[1].ranges.length).toBe(2);
+
+    unmount();
+    fixture.remove();
+  });
+
+  it('replaces the active match and supports regex capture substitutions', () => {
+    const editor = document.createElement('textarea');
+    editor.className = 'w-md-editor-text-input';
+    editor.value = 'one one';
+    document.body.prepend(editor);
+    const setMarkdown = vi.fn();
+    const { result, unmount } = renderHook(() => (
+      useSearchAndReplace('one one', setMarkdown)
+    ));
+
+    act(() => {
+      result.current.handleFind('one');
+      result.current.handleFind('one');
+      result.current.handleReplace('one', 'two');
+    });
+    expect(setMarkdown).toHaveBeenCalledWith('one two');
+
+    unmount();
+    editor.remove();
+
+    const setRegexMarkdown = vi.fn();
+    const regexHook = renderHook(() => (
+      useSearchAndReplace('alpha-1 beta-2', setRegexMarkdown)
+    ));
+    act(() => {
+      regexHook.result.current.handleReplaceAll(
+        '([a-z]+)-(\\d)',
+        '$2:$1',
+        false,
+        true,
+      );
+    });
+    expect(setRegexMarkdown).toHaveBeenCalledWith('1:alpha 2:beta');
+    regexHook.unmount();
+  });
+
+  it('advances through zero-width regex matches', () => {
+    const editor = document.createElement('textarea');
+    editor.className = 'w-md-editor-text-input';
+    editor.value = 'aa';
+    document.body.prepend(editor);
+    const { result, unmount } = renderHook(() => (
+      useSearchAndReplace('aa', vi.fn())
+    ));
+
+    act(() => result.current.handleFind('(?=a)', false, true));
+    expect(editor.selectionStart).toBe(0);
+    act(() => result.current.handleFind('(?=a)', false, true));
+    expect(editor.selectionStart).toBe(1);
+
+    unmount();
+    editor.remove();
   });
 });

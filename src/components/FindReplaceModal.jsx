@@ -11,11 +11,20 @@ const FOCUSABLE_SELECTOR = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
-const FindReplaceModal = ({ isOpen, onClose, onFind, onReplace, onReplaceAll, markdown = '' }) => {
+const FindReplaceModal = ({
+  isOpen,
+  onClose,
+  onFind,
+  onHighlight,
+  onReplace,
+  onReplaceAll,
+  markdown = '',
+}) => {
   const [findText, setFindText] = useState('');
   const [replaceText, setReplaceText] = useState('');
   const [matchCase, setMatchCase] = useState(false);
   const [useRegex, setUseRegex] = useState(false);
+  const [renderedMatchCount, setRenderedMatchCount] = useState(null);
   const findInputRef = useRef(null);
   const dialogRef = useRef(null);
   const closeDialog = useEffectEvent(() => onClose());
@@ -34,6 +43,15 @@ const FindReplaceModal = ({ isOpen, onClose, onFind, onReplace, onReplaceAll, ma
       return 0;
     }
   }, [findText, markdown, matchCase, useRegex]);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const count = onHighlight?.(findText, matchCase, useRegex);
+    const frame = requestAnimationFrame(() => {
+      setRenderedMatchCount(Number.isInteger(count) ? count : null);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [findText, isOpen, markdown, matchCase, onHighlight, useRegex]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -130,7 +148,9 @@ const FindReplaceModal = ({ isOpen, onClose, onFind, onReplace, onReplaceAll, ma
           </div>
           {findText && (
             <div className="find-match-info" aria-live="polite">
-              {matchCount === 1 ? '1 match found' : `${matchCount} matches found`}
+              {(renderedMatchCount ?? matchCount) === 1
+                ? '1 match found'
+                : `${renderedMatchCount ?? matchCount} matches found`}
             </div>
           )}
         </div>

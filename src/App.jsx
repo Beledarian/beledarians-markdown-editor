@@ -159,6 +159,7 @@ function App() {
     showFindReplace,
     setShowFindReplace,
     handleFind,
+    handleHighlightFind,
     handleReplace,
     handleReplaceAll
   } = useSearchAndReplace(markdown, setMarkdown);
@@ -874,8 +875,14 @@ function App() {
     applyLastFormat: handleApplyLastFormat,
     openFormatMenu: () => handleOpenFormatMenu('highlight'),
     openColorMenu: () => handleOpenFormatMenu('color'),
-    findReplace: () => setShowFindReplace(prev => !prev),
-    globalSearch: () => setShowGlobalSearch(prev => !prev),
+    findReplace: () => {
+      setShowGlobalSearch(false);
+      setShowFindReplace(prev => !prev);
+    },
+    globalSearch: () => {
+      setShowFindReplace(false);
+      setShowGlobalSearch(prev => !prev);
+    },
     mcpSetup: () => {
       if (isTauriRuntime) setShowMcpSetup(prev => !prev);
     }
@@ -1001,7 +1008,10 @@ function App() {
       hasFolderOpen={!!dirHandle}
       headings={headings}
       onHeadingClick={scrollToLine}
-      onOpenGlobalSearch={() => setShowGlobalSearch(true)}
+      onOpenGlobalSearch={() => {
+        setShowFindReplace(false);
+        setShowGlobalSearch(true);
+      }}
       onOpenFileExternal={handleOpenDoc}
       activeSection={activeSection}
       onActiveSectionChange={setActiveSection}
@@ -1015,7 +1025,10 @@ function App() {
         setActiveSection(section);
         setSidebarOpen(true);
       }}
-      onSearch={() => setShowGlobalSearch(true)}
+      onSearch={() => {
+        setShowFindReplace(false);
+        setShowGlobalSearch(true);
+      }}
       onExport={() => setShowPrintModal(true)}
       onThemes={() => setShowThemeExplorer(true)}
       onSettings={() => setShowSettings(true)}
@@ -1121,6 +1134,7 @@ function App() {
         setShowFindReplace={setShowFindReplace}
         markdown={markdown}
         handleFind={handleFind}
+        handleHighlightFind={handleHighlightFind}
         handleReplace={handleReplace}
         handleReplaceAll={handleReplaceAll}
         setMarkdown={setMarkdown}

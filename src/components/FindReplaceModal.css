@@ -80,6 +80,16 @@
   font-size: var(--ui-font-size-sm);
 }
 
+::highlight(md-find-results) {
+  background-color: color-mix(in srgb, var(--ui-warning) 42%, transparent);
+  color: inherit;
+}
+
+::highlight(md-find-current) {
+  background-color: var(--ui-warning);
+  color: var(--ui-bg-shell);
+}
+
 .options-group {
   display: flex;
   gap: var(--ui-space-6);

@@ -1,5 +1,10 @@
-import { useState, useCallback } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { toast } from 'react-hot-toast';
+
+const FIND_RESULTS_HIGHLIGHT = 'md-find-results';
+const FIND_CURRENT_HIGHLIGHT = 'md-find-current';
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -30,53 +35,134 @@ const collectMatches = (markdown, query, matchCase, isRegex) => {
   return matches;
 };
 
-const getRenderedMatchRect = (editor, start, end) => {
-  const renderedText = editor
-    ?.closest('.w-md-editor-text')
-    ?.querySelector('.w-md-editor-text-pre');
-  if (!renderedText || typeof document.createRange !== 'function') return null;
-
-  const walker = document.createTreeWalker(renderedText, NodeFilter.SHOW_TEXT);
-  const range = document.createRange();
-  let offset = 0;
-  let startNode = null;
-  let startOffset = 0;
-  let endNode = null;
-  let endOffset = 0;
-  let node = walker.nextNode();
-
-  while (node) {
-    const nextOffset = offset + node.textContent.length;
-    if (!startNode && start <= nextOffset) {
-      startNode = node;
-      startOffset = Math.max(0, start - offset);
-    }
-    if (end <= nextOffset) {
-      endNode = node;
-      endOffset = Math.max(0, end - offset);
-      break;
-    }
-    offset = nextOffset;
-    node = walker.nextNode();
+const indexDomText = (root) => {
+  if (!root || typeof document.createTreeWalker !== 'function') {
+    return { nodes: [], text: '' };
   }
 
-  if (!startNode || !endNode) return null;
+  const walker = document.createTreeWalker(
+    root,
+    globalThis.NodeFilter?.SHOW_TEXT ?? 4,
+  );
+  const nodes = [];
+  let text = '';
+  let node = walker.nextNode();
+  while (node) {
+    nodes.push({
+      node,
+      start: text.length,
+      end: text.length + node.textContent.length,
+    });
+    text += node.textContent;
+    node = walker.nextNode();
+  }
+  return { nodes, text };
+};
 
+const createDomRange = (nodes, start, end) => {
+  if (typeof document.createRange !== 'function') return null;
+
+  const startEntry = nodes.find((entry) => start <= entry.end);
+  const endEntry = nodes.find((entry) => end <= entry.end);
+  if (!startEntry || !endEntry) return null;
+
+  const range = document.createRange();
   try {
-    range.setStart(startNode, Math.min(startOffset, startNode.textContent.length));
-    range.setEnd(endNode, Math.min(endOffset, endNode.textContent.length));
-    const rect = range.getBoundingClientRect?.();
-    return rect && (rect.height > 0 || rect.width > 0) ? rect : null;
+    range.setStart(
+      startEntry.node,
+      Math.min(Math.max(0, start - startEntry.start), startEntry.node.textContent.length),
+    );
+    range.setEnd(
+      endEntry.node,
+      Math.min(Math.max(0, end - endEntry.start), endEntry.node.textContent.length),
+    );
+    return range;
   } catch {
     return null;
   }
+};
+
+const collectDomMatchRanges = (root, query, matchCase, isRegex) => {
+  const { nodes, text } = indexDomText(root);
+  return collectMatches(text, query, matchCase, isRegex)
+    .map((match) => ({
+      ...match,
+      range: createDomRange(nodes, match.index, match.index + match.length),
+    }))
+    .filter((match) => match.range);
+};
+
+const clearFindHighlights = () => {
+  const registry = globalThis.CSS?.highlights;
+  registry?.delete(FIND_RESULTS_HIGHLIGHT);
+  registry?.delete(FIND_CURRENT_HIGHLIGHT);
+};
+
+const applyFindHighlights = (allRanges, currentRanges = []) => {
+  const registry = globalThis.CSS?.highlights;
+  const HighlightConstructor = globalThis.Highlight;
+  if (!registry || typeof HighlightConstructor !== 'function') return false;
+
+  registry.set(FIND_RESULTS_HIGHLIGHT, new HighlightConstructor(...allRanges));
+  if (currentRanges.length > 0) {
+    registry.set(FIND_CURRENT_HIGHLIGHT, new HighlightConstructor(...currentRanges));
+  } else {
+    registry.delete(FIND_CURRENT_HIGHLIGHT);
+  }
+  return true;
+};
+
+const getFindDomMatches = (query, matchCase, isRegex) => {
+  const editorRoot = document.querySelector('.w-md-editor-text-pre');
+  const previewContainer = document.querySelector(
+    '.w-md-editor-preview, .w-md-editor-show-preview',
+  );
+  const previewRoot = previewContainer?.querySelector('.wmde-markdown')
+    || previewContainer;
+  return {
+    editor: collectDomMatchRanges(editorRoot, query, matchCase, isRegex),
+    preview: collectDomMatchRanges(previewRoot, query, matchCase, isRegex),
+  };
+};
+
+const updateFindHighlights = (query, matchCase, isRegex, currentIndex = -1) => {
+  if (!query) {
+    clearFindHighlights();
+    return { editor: [], preview: [] };
+  }
+
+  const domMatches = getFindDomMatches(query, matchCase, isRegex);
+  const allRanges = [
+    ...domMatches.editor.map((match) => match.range),
+    ...domMatches.preview.map((match) => match.range),
+  ];
+  const currentRanges = currentIndex < 0
+    ? []
+    : [
+      domMatches.editor[currentIndex % Math.max(1, domMatches.editor.length)]?.range,
+      domMatches.preview[currentIndex % Math.max(1, domMatches.preview.length)]?.range,
+    ].filter(Boolean);
+  applyFindHighlights(allRanges, currentRanges);
+  return domMatches;
+};
+
+const getRangeRect = (range) => {
+  const rect = range?.getBoundingClientRect?.();
+  if (rect && (rect.height > 0 || rect.width > 0)) return rect;
+  const parent = range?.startContainer?.parentElement;
+  return parent?.getBoundingClientRect?.() || null;
 };
 
 const scrollMatchIntoView = (editor, markdown, start, end) => {
   const scrollContainer = getEditorScrollContainer(editor);
   if (!scrollContainer) return;
 
-  const renderedRect = getRenderedMatchRect(editor, start, end);
+  const renderedText = editor
+    ?.closest('.w-md-editor-text')
+    ?.querySelector('.w-md-editor-text-pre');
+  const renderedIndex = indexDomText(renderedText);
+  const renderedRange = createDomRange(renderedIndex.nodes, start, end);
+  const renderedRect = getRangeRect(renderedRange);
   const containerRect = scrollContainer.getBoundingClientRect?.();
   let targetTop;
 
@@ -103,6 +189,29 @@ const scrollMatchIntoView = (editor, markdown, start, end) => {
   }
 };
 
+const scrollPreviewRangeIntoView = (range) => {
+  const preview = range?.startContainer?.parentElement?.closest(
+    '.w-md-editor-preview, .w-md-editor-show-preview',
+  );
+  if (!preview) return;
+
+  const rangeRect = getRangeRect(range);
+  const previewRect = preview.getBoundingClientRect?.();
+  const matchTop = rangeRect && previewRect
+    ? preview.scrollTop + rangeRect.top - previewRect.top
+    : preview.scrollTop;
+  const maxScrollTop = Math.max(0, preview.scrollHeight - preview.clientHeight);
+  const top = Math.min(
+    Math.max(0, matchTop - Math.max(24, preview.clientHeight / 3)),
+    maxScrollTop,
+  );
+  if (typeof preview.scrollTo === 'function') {
+    preview.scrollTo({ top, behavior: 'smooth' });
+  } else {
+    preview.scrollTop = top;
+  }
+};
+
 /**
  * Custom hook managing search, replace, match indexing, and find/replace modal visibility.
  */
@@ -112,27 +221,120 @@ export function useSearchAndReplace(markdown, setMarkdown) {
   const [searchQuery, setSearchQuery] = useState('');
   const [replaceQuery, setReplaceQuery] = useState('');
   const [matchIndex, setMatchIndex] = useState(0);
+  const previewFindRef = useRef({
+    signature: '',
+    index: -1,
+  });
+  const documentFindRef = useRef({
+    signature: '',
+    index: -1,
+  });
+  const highlightRequestRef = useRef({
+    query: '',
+    matchCase: false,
+    isRegex: false,
+  });
+
+  useEffect(() => {
+    if (!showFindReplace) clearFindHighlights();
+    return undefined;
+  }, [showFindReplace]);
+
+  useEffect(() => () => clearFindHighlights(), []);
+
+  const handleHighlightFind = useCallback((query, matchCase = false, isRegex = false) => {
+    highlightRequestRef.current = { query, matchCase, isRegex };
+    try {
+      const matches = updateFindHighlights(query, matchCase, isRegex);
+      const editor = document.querySelector('.w-md-editor-text-input');
+      return editor
+        ? collectMatches(markdown, query, matchCase, isRegex).length
+        : matches.preview.length;
+    } catch {
+      clearFindHighlights();
+      return 0;
+    }
+  }, [markdown]);
+
+  useEffect(() => {
+    if (!showFindReplace) return undefined;
+    const refresh = () => {
+      const { query, matchCase, isRegex } = highlightRequestRef.current;
+      if (query) updateFindHighlights(query, matchCase, isRegex, matchIndex);
+    };
+    const frame = requestAnimationFrame(refresh);
+    const root = document.querySelector('.editor-container');
+    const observer = root && typeof MutationObserver !== 'undefined'
+      ? new MutationObserver(refresh)
+      : null;
+    observer?.observe(root, { childList: true, characterData: true, subtree: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [markdown, matchIndex, showFindReplace]);
 
   const handleFind = useCallback((query, matchCase = false, isRegex = false, backwards = false) => {
     setSearchQuery(query);
     if (!query) return;
 
     try {
+      const editor = typeof document !== 'undefined'
+        ? document.querySelector('.w-md-editor-text-input')
+        : null;
+      if (!editor) {
+        const domMatches = getFindDomMatches(query, matchCase, isRegex);
+        if (domMatches.preview.length === 0) {
+          setMatchIndex(0);
+          clearFindHighlights();
+          toast('No occurrences found');
+          return;
+        }
+
+        const signature = `${matchCase}:${isRegex}:${query}`;
+        const isNewSearch = previewFindRef.current.signature !== signature;
+        const previousIndex = previewFindRef.current.index;
+        const nextIndex = isNewSearch
+          ? (backwards ? domMatches.preview.length - 1 : 0)
+          : (
+            previousIndex
+            + (backwards ? -1 : 1)
+            + domMatches.preview.length
+          ) % domMatches.preview.length;
+
+        previewFindRef.current = { signature, index: nextIndex };
+        setMatchIndex(nextIndex);
+        updateFindHighlights(query, matchCase, isRegex, nextIndex);
+
+        const currentRange = domMatches.preview[nextIndex].range;
+        const selection = globalThis.getSelection?.();
+        selection?.removeAllRanges();
+        selection?.addRange(currentRange);
+        scrollPreviewRangeIntoView(currentRange);
+        return;
+      }
+
       const matches = collectMatches(markdown, query, matchCase, isRegex);
       if (matches.length === 0) {
         setMatchIndex(0);
+        clearFindHighlights();
         toast('No occurrences found');
         return;
       }
 
-      const editor = typeof document !== 'undefined'
-        ? document.querySelector('.w-md-editor-text-input')
-        : null;
       const selectionStart = editor?.selectionStart ?? 0;
       const selectionEnd = editor?.selectionEnd ?? selectionStart;
+      const signature = `${matchCase}:${isRegex}:${query}`;
+      const isNewSearch = documentFindRef.current.signature !== signature;
 
       let nextIndex;
-      if (backwards) {
+      if (!isNewSearch) {
+        nextIndex = (
+          documentFindRef.current.index
+          + (backwards ? -1 : 1)
+          + matches.length
+        ) % matches.length;
+      } else if (backwards) {
         nextIndex = -1;
         for (let index = matches.length - 1; index >= 0; index -= 1) {
           if (matches[index].index < selectionStart) {
@@ -147,9 +349,9 @@ export function useSearchAndReplace(markdown, setMarkdown) {
       }
 
       const match = matches[nextIndex];
+      documentFindRef.current = { signature, index: nextIndex };
       setMatchIndex(nextIndex);
-      if (!editor) return;
-
+      updateFindHighlights(query, matchCase, isRegex, nextIndex);
       editor.setSelectionRange(match.index, match.index + match.length);
       editor.dispatchEvent(new Event('select', { bubbles: true }));
       scrollMatchIntoView(editor, markdown, match.index, match.index + match.length);
@@ -161,21 +363,29 @@ export function useSearchAndReplace(markdown, setMarkdown) {
   const handleReplace = useCallback((findText, replaceText, matchCase = false, isRegex = false) => {
     if (!findText) return;
     try {
-      const flags = matchCase ? 'g' : 'gi';
       const regexStr = isRegex ? findText : escapeRegExp(findText);
-      const regex = new RegExp(regexStr, flags);
-      
-      let replaced = false;
-      const newVal = markdown.replace(regex, (match) => {
-        if (!replaced) {
-          replaced = true;
-          return replaceText;
-        }
-        return match;
-      });
+      const matches = collectMatches(markdown, findText, matchCase, isRegex);
+      const signature = `${matchCase}:${isRegex}:${findText}`;
+      const activeIndex = documentFindRef.current.signature === signature
+        ? documentFindRef.current.index
+        : (
+          previewFindRef.current.signature === signature
+            ? previewFindRef.current.index
+            : 0
+        );
+      const match = matches[activeIndex];
 
-      if (replaced) {
+      if (match) {
+        const matchedText = markdown.slice(match.index, match.index + match.length);
+        const singleRegex = new RegExp(regexStr, matchCase ? '' : 'i');
+        const replacement = matchedText.replace(singleRegex, replaceText);
+        const newVal = markdown.slice(0, match.index)
+          + replacement
+          + markdown.slice(match.index + match.length);
         setMarkdown(newVal);
+        documentFindRef.current = { signature: '', index: -1 };
+        previewFindRef.current = { signature: '', index: -1 };
+        clearFindHighlights();
         toast.success('Replaced 1 occurrence');
       } else {
         toast('No occurrences found');
@@ -193,7 +403,10 @@ export function useSearchAndReplace(markdown, setMarkdown) {
       const regex = new RegExp(regexStr, flags);
       const count = (markdown.match(regex) || []).length;
       if (count > 0) {
-        setMarkdown(markdown.replace(regex, () => replaceText));
+        setMarkdown(markdown.replace(regex, replaceText));
+        documentFindRef.current = { signature: '', index: -1 };
+        previewFindRef.current = { signature: '', index: -1 };
+        clearFindHighlights();
         toast.success(`Replaced ${count} occurrences`);
       } else {
         toast('No occurrences found');
@@ -215,6 +428,7 @@ export function useSearchAndReplace(markdown, setMarkdown) {
     matchIndex,
     setMatchIndex,
     handleFind,
+    handleHighlightFind,
     handleReplace,
     handleReplaceAll
   };
