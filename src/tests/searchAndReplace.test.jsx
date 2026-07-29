@@ -222,6 +222,34 @@ describe('Search and Replace Logic & State Management', () => {
     fixture.remove();
   });
 
+  it('falls back to visible mark elements when custom highlights are unavailable', () => {
+    vi.stubGlobal('CSS', {});
+    vi.stubGlobal('Highlight', undefined);
+    const fixture = document.createElement('div');
+    fixture.innerHTML = `
+      <div class="w-md-editor-text">
+        <div class="w-md-editor-text-pre">Hello source</div>
+        <textarea class="w-md-editor-text-input">Hello source</textarea>
+      </div>
+      <div class="w-md-editor-preview">
+        <div class="wmde-markdown">Hello preview</div>
+      </div>
+    `;
+    document.body.prepend(fixture);
+    const { result, unmount } = renderHook(() => (
+      useSearchAndReplace('Hello source', vi.fn())
+    ));
+
+    act(() => result.current.handleHighlightFind('Hello'));
+    expect(document.querySelectorAll('mark.md-find-highlight')).toHaveLength(2);
+
+    act(() => result.current.handleFind('Hello'));
+    expect(document.querySelectorAll('mark.md-find-highlight-current')).toHaveLength(2);
+
+    unmount();
+    fixture.remove();
+  });
+
   it('replaces the active match and supports regex capture substitutions', () => {
     const editor = document.createElement('textarea');
     editor.className = 'w-md-editor-text-input';

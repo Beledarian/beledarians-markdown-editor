@@ -90,6 +90,16 @@
   color: var(--ui-bg-shell);
 }
 
+mark.md-find-highlight {
+  background: color-mix(in srgb, var(--ui-warning) 42%, transparent);
+  color: inherit;
+}
+
+mark.md-find-highlight-current {
+  background: var(--ui-warning);
+  color: var(--ui-bg-shell);
+}
+
 .options-group {
   display: flex;
   gap: var(--ui-space-6);

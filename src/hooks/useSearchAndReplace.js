@@ -96,6 +96,12 @@ const clearFindHighlights = () => {
   const registry = globalThis.CSS?.highlights;
   registry?.delete(FIND_RESULTS_HIGHLIGHT);
   registry?.delete(FIND_CURRENT_HIGHLIGHT);
+  const parents = new Set();
+  document.querySelectorAll('mark.md-find-highlight').forEach((mark) => {
+    if (mark.parentNode) parents.add(mark.parentNode);
+    mark.replaceWith(...mark.childNodes);
+  });
+  parents.forEach((parent) => parent.normalize());
 };
 
 const applyFindHighlights = (allRanges, currentRanges = []) => {
@@ -112,6 +118,58 @@ const applyFindHighlights = (allRanges, currentRanges = []) => {
   return true;
 };
 
+const wrapRangeSegments = (range, isCurrent) => {
+  const root = range.commonAncestorContainer.nodeType === 3
+    ? range.commonAncestorContainer.parentElement
+    : range.commonAncestorContainer;
+  if (!root) return;
+
+  const walker = document.createTreeWalker(
+    root,
+    globalThis.NodeFilter?.SHOW_TEXT ?? 4,
+  );
+  const nodes = [];
+  if (range.commonAncestorContainer.nodeType === 3) {
+    nodes.push(range.commonAncestorContainer);
+  } else {
+    let node = walker.nextNode();
+    while (node) {
+      if (range.intersectsNode(node)) nodes.push(node);
+      node = walker.nextNode();
+    }
+  }
+
+  nodes.reverse().forEach((textNode) => {
+    const start = textNode === range.startContainer ? range.startOffset : 0;
+    const end = textNode === range.endContainer ? range.endOffset : textNode.length;
+    if (end <= start) return;
+
+    let selectedNode = textNode;
+    if (end < selectedNode.length) selectedNode.splitText(end);
+    if (start > 0) selectedNode = selectedNode.splitText(start);
+
+    const mark = document.createElement('mark');
+    mark.className = isCurrent
+      ? 'md-find-highlight md-find-highlight-current'
+      : 'md-find-highlight';
+    selectedNode.parentNode?.insertBefore(mark, selectedNode);
+    mark.appendChild(selectedNode);
+  });
+};
+
+const applyFallbackHighlights = (domMatches, currentIndex) => {
+  ['editor', 'preview'].forEach((pane) => {
+    const matches = domMatches[pane];
+    const activeIndex = currentIndex < 0 || matches.length === 0
+      ? -1
+      : currentIndex % matches.length;
+    matches
+      .map((match, index) => ({ ...match, index }))
+      .reverse()
+      .forEach((match) => wrapRangeSegments(match.range, match.index === activeIndex));
+  });
+};
+
 const getFindDomMatches = (query, matchCase, isRegex) => {
   const editorRoot = document.querySelector('.w-md-editor-text-pre');
   const previewContainer = document.querySelector(
@@ -126,8 +184,8 @@ const getFindDomMatches = (query, matchCase, isRegex) => {
 };
 
 const updateFindHighlights = (query, matchCase, isRegex, currentIndex = -1) => {
+  clearFindHighlights();
   if (!query) {
-    clearFindHighlights();
     return { editor: [], preview: [] };
   }
 
@@ -142,7 +200,10 @@ const updateFindHighlights = (query, matchCase, isRegex, currentIndex = -1) => {
       domMatches.editor[currentIndex % Math.max(1, domMatches.editor.length)]?.range,
       domMatches.preview[currentIndex % Math.max(1, domMatches.preview.length)]?.range,
     ].filter(Boolean);
-  applyFindHighlights(allRanges, currentRanges);
+  if (!applyFindHighlights(allRanges, currentRanges)) {
+    applyFallbackHighlights(domMatches, currentIndex);
+    return getFindDomMatches(query, matchCase, isRegex);
+  }
   return domMatches;
 };
 
@@ -264,10 +325,15 @@ export function useSearchAndReplace(markdown, setMarkdown) {
     };
     const frame = requestAnimationFrame(refresh);
     const root = document.querySelector('.editor-container');
+    const observerOptions = { childList: true, characterData: true, subtree: true };
     const observer = root && typeof MutationObserver !== 'undefined'
-      ? new MutationObserver(refresh)
+      ? new MutationObserver(() => {
+        observer.disconnect();
+        refresh();
+        observer.observe(root, observerOptions);
+      })
       : null;
-    observer?.observe(root, { childList: true, characterData: true, subtree: true });
+    observer?.observe(root, observerOptions);
     return () => {
       cancelAnimationFrame(frame);
       observer?.disconnect();
@@ -304,9 +370,14 @@ export function useSearchAndReplace(markdown, setMarkdown) {
 
         previewFindRef.current = { signature, index: nextIndex };
         setMatchIndex(nextIndex);
-        updateFindHighlights(query, matchCase, isRegex, nextIndex);
+        const highlightedMatches = updateFindHighlights(
+          query,
+          matchCase,
+          isRegex,
+          nextIndex,
+        );
 
-        const currentRange = domMatches.preview[nextIndex].range;
+        const currentRange = highlightedMatches.preview[nextIndex].range;
         const selection = globalThis.getSelection?.();
         selection?.removeAllRanges();
         selection?.addRange(currentRange);
