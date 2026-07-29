@@ -27,7 +27,7 @@
     "android:build": "npm run build && cap sync"
   },
   "dependencies": {
-    "@capacitor/android": "^7.6.8",
+    "@capacitor/android": "^8.4.2",
     "@capacitor/cli": "^7.6.8",
     "@capacitor/core": "^7.6.8",
     "@capacitor/filesystem": "^7.1.8",
