@@ -276,7 +276,7 @@ const scrollPreviewRangeIntoView = (range) => {
 /**
  * Custom hook managing search, replace, match indexing, and find/replace modal visibility.
  */
-export function useSearchAndReplace(markdown, setMarkdown) {
+export function useSearchAndReplace(markdown, setMarkdown, viewMode) {
   const [showGlobalSearch, setShowGlobalSearch] = useState(false);
   const [showFindReplace, setShowFindReplace] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -324,9 +324,13 @@ export function useSearchAndReplace(markdown, setMarkdown) {
       if (query) updateFindHighlights(query, matchCase, isRegex, matchIndex);
     };
     const frame = requestAnimationFrame(refresh);
+    const delayedRefresh = setTimeout(refresh, 200);
     const root = document.querySelector('.editor-container');
     const observerOptions = { childList: true, characterData: true, subtree: true };
-    const observer = root && typeof MutationObserver !== 'undefined'
+    const supportsCustomHighlights = Boolean(
+      globalThis.CSS?.highlights && typeof globalThis.Highlight === 'function',
+    );
+    const observer = supportsCustomHighlights && root && typeof MutationObserver !== 'undefined'
       ? new MutationObserver(() => {
         observer.disconnect();
         refresh();
@@ -336,9 +340,10 @@ export function useSearchAndReplace(markdown, setMarkdown) {
     observer?.observe(root, observerOptions);
     return () => {
       cancelAnimationFrame(frame);
+      clearTimeout(delayedRefresh);
       observer?.disconnect();
     };
-  }, [markdown, matchIndex, showFindReplace]);
+  }, [markdown, matchIndex, showFindReplace, viewMode]);
 
   const handleFind = useCallback((query, matchCase = false, isRegex = false, backwards = false) => {
     setSearchQuery(query);

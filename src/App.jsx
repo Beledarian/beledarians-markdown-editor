@@ -162,7 +162,7 @@ function App() {
     handleHighlightFind,
     handleReplace,
     handleReplaceAll
-  } = useSearchAndReplace(markdown, setMarkdown);
+  } = useSearchAndReplace(markdown, setMarkdown, viewMode);
 
   const [scrollSynced, setScrollSynced] = useState(() => {
     const saved = localStorage.getItem('md-scroll-synced');
