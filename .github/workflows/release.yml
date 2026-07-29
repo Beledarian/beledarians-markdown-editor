@@ -158,6 +158,9 @@ jobs:
       - run: npm ci
       - run: npm run android:build
 
+      - name: Make Gradle wrapper executable
+        run: chmod +x android/gradlew
+
       - name: Build unsigned debug APK
         working-directory: android
         run: ./gradlew assembleDebug
