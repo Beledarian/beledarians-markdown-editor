@@ -5,15 +5,47 @@ updates:
     schedule:
       interval: monthly
     open-pull-requests-limit: 5
+    groups:
+      react:
+        patterns:
+          - react
+          - react-dom
+      capacitor:
+        patterns:
+          - "@capacitor/*"
+      testing-library:
+        patterns:
+          - "@testing-library/*"
+    ignore:
+      - dependency-name: "@capacitor/*"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "@eslint/js"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: eslint
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "@testing-library/jest-dom"
+        update-types:
+          - version-update:semver-major
 
   - package-ecosystem: cargo
     directory: /src-tauri
     schedule:
       interval: monthly
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: reqwest
+        update-types:
+          - version-update:semver-major
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
     open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
