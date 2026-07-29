@@ -36,13 +36,18 @@ export default function WebDownloadDock() {
 
   return createPortal(
     <aside className="web-download-dock" aria-label="Desktop app download">
-      <div className="web-download-link" aria-disabled="true">
+      <a
+        className="web-download-link"
+        href="https://github.com/Beledarian/beledarians-markdown-editor/releases"
+        target="_blank"
+        rel="noreferrer"
+      >
         <DownloadIcon />
         <span>
           <strong>Desktop downloads</strong>
-          <small>Coming after platform verification</small>
+          <small>Unsigned personal pre-release builds</small>
         </span>
-      </div>
+      </a>
       <button
         type="button"
         className="web-download-dismiss"

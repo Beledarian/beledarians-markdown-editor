@@ -16,13 +16,15 @@ describe('WebDownloadDock', () => {
     delete window.__TAURI_INTERNALS__;
   });
 
-  it('does not expose a broken download before release assets exist', async () => {
+  it('links to the public release downloads', async () => {
     renderDock();
 
     expect(
-      (await screen.findByText('Desktop downloads')).closest('[aria-disabled]'),
-    ).toHaveAttribute('aria-disabled', 'true');
-    expect(screen.queryByRole('link', { name: /Desktop downloads/i })).not.toBeInTheDocument();
+      await screen.findByRole('link', { name: /Desktop downloads/i }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/Beledarian/beledarians-markdown-editor/releases',
+    );
   });
 
   it('can be hidden for the current browser session', async () => {
