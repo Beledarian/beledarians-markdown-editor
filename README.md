@@ -67,8 +67,9 @@ npm run desktop:build
 npm run android:build
 ```
 
-The repository limits Node heaps to 1 GB and test concurrency to two workers.
-See [CONTRIBUTING.md](CONTRIBUTING.md) before running or changing the test suite.
+CI uses a low-memory Vitest configuration. Contributors can run the normal test
+command above; [CONTRIBUTING.md](CONTRIBUTING.md) also documents an optional
+constrained-machine command.
 
 ## Releases
 
@@ -91,6 +92,35 @@ pipeline, platform adapters, and CLI/MCP control plane.
 The native control server listens only on loopback, but it is not an
 authentication boundary against other local processes. Review
 [SECURITY.md](SECURITY.md) before enabling agent integrations.
+
+## MCP integration
+
+The experimental MCP integration lets a compatible local agent ask the running
+desktop editor to perform four operations:
+
+- `mdedit_open` — open an existing Markdown file
+- `mdedit_new` — create and open a new Markdown file
+- `mdedit_pdf` — open a Markdown file and request PDF export
+- `mdedit_status` — check whether the desktop control server is available
+
+The MCP process is a small Node.js stdio bridge at [`cli/md.mjs`](cli/md.mjs).
+It forwards requests to the Tauri application's loopback control server on
+`127.0.0.1:51234`; it is not a hosted service and the web editor does not expose
+the connection controls.
+
+In the desktop app, choose **AI agent setup** to register `mdedit` for Claude
+Code, Codex, or Antigravity/Gemini. The optional authoring skill is installed
+separately and teaches the agent the editor's custom Markdown syntax. For manual
+configuration, point an MCP client at:
+
+```bash
+node /absolute/path/to/beledarians-markdown-editor/cli/md.mjs mcp
+```
+
+The desktop app must be running for document operations. Because the loopback
+server has no per-client authentication token, any local process able to connect
+to that port may control the editor. Enable it only on a machine and user session
+you trust; see [SECURITY.md](SECURITY.md) for the complete boundary.
 
 ## Agent authoring skill
 
