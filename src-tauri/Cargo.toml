@@ -1,6 +1,6 @@
 [package]
 name = "beledarians-markdown-editor"
-version = "0.1.1"
+version = "0.1.2"
 description = "Native desktop runtime for Beledarians Markdown Editor"
 authors = ["Beledarian"]
 license = "MIT"
