@@ -44,8 +44,10 @@ export function useAppExport({ markdown, theme }) {
 
     const iframe = document.createElement('iframe');
     iframe.style.position = 'absolute';
-    iframe.style.width = '0px';
-    iframe.style.height = '0px';
+    iframe.style.top = '-9999px';
+    iframe.style.left = '-9999px';
+    iframe.style.width = '1px';
+    iframe.style.height = '1px';
     iframe.style.border = 'none';
     document.body.appendChild(iframe);
     printIframeRef.current = iframe;
@@ -163,7 +165,7 @@ export function useAppExport({ markdown, theme }) {
         </div>
         <div class="print-footer">BeledariansMD-Editor</div>
         <script>
-          window.onload = () => {
+          (function() {
              const images = document.getElementsByTagName('img');
              const promises = Array.from(images).map(img => {
                if (img.complete) return Promise.resolve();
@@ -175,10 +177,11 @@ export function useAppExport({ markdown, theme }) {
              
              Promise.all(promises).then(() => {
                 setTimeout(() => {
+                   window.focus();
                    window.print();
-                }, 500);
+                }, 250);
              });
-          };
+          })();
         </script>
       </body>
       </html>

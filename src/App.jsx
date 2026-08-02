@@ -295,6 +295,7 @@ function App() {
     setShowPrintModal,
     handleExportHTML,
     handleExportPDF,
+    handlePrintConfirm,
     copyToClipboard,
     handleCopyHTML
   } = useAppExport({ markdown, theme });
@@ -1148,9 +1149,10 @@ function App() {
         setShowCheatSheet={setShowCheatSheet}
         showPrintModal={showPrintModal}
         setShowPrintModal={setShowPrintModal}
+        handlePrintConfirm={handlePrintConfirm}
         contextMenu={contextMenu}
         setContextMenu={setContextMenu}
-        handleSaveFile={saveFile}
+        handleSaveFile={handleSaveFile}
         handleOpenFolder={openFolder}
         handleCloseTab={closeTab}
         handleInsertComment={handleAddComment}

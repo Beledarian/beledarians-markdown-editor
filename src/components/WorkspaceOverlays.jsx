@@ -49,6 +49,7 @@ export function WorkspaceOverlays({
   setShowCheatSheet,
   showPrintModal,
   setShowPrintModal,
+  handlePrintConfirm,
   contextMenu,
   setContextMenu,
   handleSaveFile,
@@ -116,7 +117,7 @@ export function WorkspaceOverlays({
       <PrintModal
         isOpen={showPrintModal}
         onClose={() => setShowPrintModal(false)}
-        markdown={markdown}
+        onPrint={handlePrintConfirm}
       />
       <McpAgentSetupModal
         isOpen={showMcpSetup}
