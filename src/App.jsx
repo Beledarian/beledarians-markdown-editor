@@ -996,7 +996,11 @@ function App() {
       loading={fsLoading}
       ignorePatterns={ignorePatterns}
       currentFile={currentFile}
-      onFileSelect={handleFileSelect}
+      onFileSelect={(file) => {
+        handleFileSelect(file);
+        // ponytail: auto-close sidebar on narrow mobile viewports so user sees opened document
+        if (typeof window !== 'undefined' && window.innerWidth <= 600) setSidebarOpen(false);
+      }}
       onInsertImage={insertTextAtCursor}
       onRefresh={refreshFileSystem}
       onAddIgnore={addIgnorePattern}

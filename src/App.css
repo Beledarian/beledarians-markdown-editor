@@ -929,6 +929,12 @@
       border: none !important;
     }
 
+    /* ponytail: prevent split equations, tables, and code blocks across print pages */
+    .wmde-markdown :is(.katex-display, table, pre) {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
     #preview {
       padding: 0 !important;
       overflow: visible !important;

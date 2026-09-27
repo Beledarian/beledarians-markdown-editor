@@ -87,6 +87,11 @@ export function useAppExport({ markdown, theme }) {
               padding: ${removeMargins ? '20px !important' : '0 !important'};
               ${showFooter ? 'padding-bottom: 30px !important;' : ''}
             }
+            /* ponytail: prevent split equations, tables, and code blocks across print pages */
+            .wmde-markdown :is(.katex-display, table, pre) {
+              break-inside: avoid;
+              page-break-inside: avoid;
+            }
           }
           
           body.print-theme-dark {

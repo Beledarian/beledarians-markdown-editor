@@ -71,4 +71,32 @@ describe('Math Rendering & Responsive Sidebar Expansion Contracts', () => {
       );
     });
   });
+
+  describe('Polish & Quality Enhancements (Ponytail mode)', () => {
+    it('protects block math (.katex-display) from horizontal overflow in uiw-editor.css', () => {
+      const editorCss = readSrcFile('ui/adapters/uiw-editor.css');
+      expect(editorCss).toMatch(/\.workspace-shell\s+\.wmde-markdown\s+\.katex-display\s*\{[\s\S]*?overflow-x:\s*auto;/);
+      expect(editorCss).toMatch(/\.workspace-shell\s+\.wmde-markdown\s+\.katex-display\s*\{[\s\S]*?scrollbar-width:\s*thin;/);
+    });
+
+    it('protects block math, tables, and code from page break slicing in App.css and useAppExport.js', () => {
+      const appCss = readSrcFile('App.css');
+      expect(appCss).toMatch(/\.wmde-markdown\s+:is\(\.katex-display,\s*table,\s*pre\)\s*\{[\s\S]*?break-inside:\s*avoid;/);
+
+      const exportJs = readSrcFile('hooks/useAppExport.js');
+      expect(exportJs).toMatch(/\.wmde-markdown\s+:is\(\.katex-display,\s*table,\s*pre\)\s*\{[\s\S]*?break-inside:\s*avoid;/);
+    });
+
+    it('auto-closes sidebar on narrow viewports <= 600px upon file selection in App.jsx', () => {
+      const appJsx = readSrcFile('App.jsx');
+      expect(appJsx).toContain('window.innerWidth <= 600');
+      expect(appJsx).toContain('setSidebarOpen(false)');
+    });
+
+    it('scopes vendor-react manualChunk to core runtime to prevent circular chunk warnings', () => {
+      const viteConfig = fs.readFileSync(path.join(rootDir, 'vite.config.js'), 'utf-8');
+      expect(viteConfig).toContain('(react|react-dom|scheduler)');
+      expect(viteConfig).not.toContain("id.includes('react') || id.includes('react-dom')");
+    });
+  });
 });

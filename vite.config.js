@@ -42,7 +42,8 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('react-syntax-highlighter') || id.includes('prismjs') || id.includes('lowlight')) {
               return 'syntax-highlighter';
             }
-            if (id.includes('react') || id.includes('react-dom')) {
+            // ponytail: match core react runtime only, avoiding package-name false positives like @uiw/react-md-editor
+            if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) {
               return 'vendor-react';
             }
           }
