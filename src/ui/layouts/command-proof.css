@@ -95,6 +95,19 @@
       grid-column: 1 / -1;
     }
 
+    .workspace-shell[data-layout='command-proof'][data-navigator-open='true'] {
+      grid-template-columns: minmax(var(--ui-navigator-width), 0.27fr) minmax(0, 1fr);
+    }
+
+    .workspace-shell[data-layout='command-proof'][data-navigator-open='true'] .navigator-region {
+      display: block;
+    }
+
+    .workspace-shell[data-layout='command-proof'][data-navigator-open='true'] .tabs-region,
+    .workspace-shell[data-layout='command-proof'][data-navigator-open='true'] .workspace-region {
+      grid-column: 2;
+    }
+
     .workspace-shell[data-layout='command-proof'] .workspace-region {
       grid-template-columns: minmax(0, 1fr);
     }

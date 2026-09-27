@@ -89,6 +89,14 @@
       display: none;
     }
 
+    .workspace-shell[data-layout='split-workbench'][data-navigator-open='true'] {
+      grid-template-columns: var(--ui-activity-width) var(--ui-navigator-width) minmax(0, 1fr);
+    }
+
+    .workspace-shell[data-layout='split-workbench'][data-navigator-open='true'] .navigator-region {
+      display: block;
+    }
+
     .workspace-shell[data-layout='split-workbench'] .workspace-region {
       grid-template-columns: minmax(0, 1fr);
     }
